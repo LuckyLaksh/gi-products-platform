@@ -1,0 +1,48 @@
+<template>
+    <lightning-card title="Product Origins Map" icon-name="standard:location">
+        <div class="slds-p-around_medium">
+            <!-- Loading Spinner -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading map..."></lightning-spinner>
+            </template>
+
+            <!-- Map -->
+            <template if:false={isLoading}>
+                <template if:true={hasProducts}>
+                    <lightning-map
+                        map-markers={mapMarkers}
+                        onmarkerselect={handleMarkerSelect}
+                        zoom-level="5"
+                        list-view="hidden">
+                    </lightning-map>
+                    
+                    <!-- Selected Product Details -->
+                    <template if:true={selectedProduct}>
+                        <div class="slds-m-top_medium">
+                            <lightning-card>
+                                <div class="slds-p-around_small">
+                                    <h3 class="slds-text-heading_small">{selectedProduct.Name}</h3>
+                                    <p class="slds-text-body_small">
+                                        <lightning-badge label={selectedProduct.Product_Type__c}></lightning-badge>
+                                        <lightning-badge label={selectedProduct.GI_Status__c} class="slds-m-left_x-small"></lightning-badge>
+                                    </p>
+                                    <p class="slds-text-body_small slds-m-top_x-small">
+                                        <lightning-icon icon-name="utility:location" size="x-small" class="slds-m-right_xx-small"></lightning-icon>
+                                        {selectedProduct.Origin_City__c}, {selectedProduct.Origin_State__c}
+                                    </p>
+                                </div>
+                            </lightning-card>
+                        </div>
+                    </template>
+                </template>
+
+                <template if:false={hasProducts}>
+                    <div class="slds-align_absolute-center slds-p-around_large">
+                        <p class="slds-text-heading_medium">No products with location data found</p>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>
+

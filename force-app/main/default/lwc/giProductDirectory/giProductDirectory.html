@@ -1,0 +1,110 @@
+<template>
+    <lightning-card title="GI Products Directory" icon-name="standard:product">
+        <div class="slds-p-around_medium">
+            <!-- Search and Filters -->
+            <div class="slds-grid slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input
+                        type="search"
+                        label="Search Products"
+                        placeholder="Search by name, description, or origin story..."
+                        value={searchTerm}
+                        onchange={handleSearch}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-combobox
+                        label="Product Type"
+                        value={selectedProductType}
+                        options={productTypeOptions}
+                        onchange={handleProductTypeChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-combobox
+                        label="GI Status"
+                        value={selectedGIStatus}
+                        options={giStatusOptions}
+                        onchange={handleGIStatusChange}>
+                    </lightning-combobox>
+                </div>
+            </div>
+            <div class="slds-grid slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                    <lightning-combobox
+                        label="Origin State"
+                        value={selectedOriginState}
+                        options={originStates}
+                        onchange={handleOriginStateChange}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading products..."></lightning-spinner>
+            </template>
+
+            <!-- Products Grid -->
+            <template if:false={isLoading}>
+                <template if:true={hasProducts}>
+                    <div class="slds-grid slds-gutters slds-wrap">
+                        <template for:each={products} for:item="product">
+                            <div key={product.Id} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <lightning-card class="product-card" data-id={product.Id} onclick={handleProductClick}>
+                                    <div class="slds-p-around_small">
+                                        <h3 class="slds-text-heading_small slds-m-bottom_x-small">{product.Name}</h3>
+                                        <p class="slds-text-body_small slds-m-bottom_x-small">
+                                            <lightning-badge label={product.Product_Type__c}></lightning-badge>
+                                            <lightning-badge label={product.GI_Status__c} class="slds-m-left_x-small"></lightning-badge>
+                                        </p>
+                                        <p class="slds-text-body_small slds-text-color_weak">
+                                            <template if:true={product.Origin_State__c}>
+                                                <lightning-icon icon-name="utility:location" size="x-small" class="slds-m-right_xx-small"></lightning-icon>
+                                                {product.Origin_City__c}, {product.Origin_State__c}
+                                            </template>
+                                        </p>
+                                        <p class="slds-text-body_small slds-m-top_x-small">
+                                            <template if:true={product.Description}>
+                                                {product.Description}
+                                            </template>
+                                        </p>
+                                    </div>
+                                </lightning-card>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="slds-grid slds-grid_align-spread slds-m-top_medium">
+                        <div class="slds-col">
+                            <p class="slds-text-body_small">{pageInfo}</p>
+                        </div>
+                        <div class="slds-col">
+                            <lightning-button-group>
+                                <lightning-button
+                                    label="Previous"
+                                    onclick={handlePreviousPage}
+                                    disabled={!hasPreviousPage}>
+                                </lightning-button>
+                                <lightning-button
+                                    label="Next"
+                                    onclick={handleNextPage}
+                                    disabled={!hasNextPage}>
+                                </lightning-button>
+                            </lightning-button-group>
+                        </div>
+                    </div>
+                </template>
+
+                <template if:false={hasProducts}>
+                    <div class="slds-align_absolute-center slds-p-around_large">
+                        <p class="slds-text-heading_medium">No products found</p>
+                        <p class="slds-text-body_regular slds-text-color_weak">Try adjusting your search or filters</p>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>
+
