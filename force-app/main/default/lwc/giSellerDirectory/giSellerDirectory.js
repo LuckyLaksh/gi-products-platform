@@ -26,7 +26,11 @@ export default class GiSellerDirectory extends NavigationMixin(LightningElement)
             offset: offset
         })
         .then(result => {
-            this.sellers = result;
+            // Add badge class to each seller
+            this.sellers = result.map(seller => ({
+                ...seller,
+                badgeClass: this.getBadgeClass(seller.Seller_Badge__c)
+            }));
             this.isLoading = false;
         })
         .catch(error => {
@@ -86,8 +90,16 @@ export default class GiSellerDirectory extends NavigationMixin(LightningElement)
         return this.currentPage > 1;
     }
     
+    get isPreviousPageDisabled() {
+        return !this.hasPreviousPage;
+    }
+    
     get hasNextPage() {
         return this.currentPage < this.totalPages;
+    }
+    
+    get isNextPageDisabled() {
+        return !this.hasNextPage;
     }
     
     get pageInfo() {

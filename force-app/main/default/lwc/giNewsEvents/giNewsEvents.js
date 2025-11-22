@@ -16,7 +16,11 @@ export default class GiNewsEvents extends NavigationMixin(LightningElement) {
         this.isLoading = true;
         getNewsEvents({ limitSize: this.limitSize })
         .then(result => {
-            this.newsEvents = result;
+            // Format dates for each item
+            this.newsEvents = result.map(item => ({
+                ...item,
+                formattedDate: this.formatDate(item.Event_Date__c)
+            }));
             this.isLoading = false;
         })
         .catch(error => {

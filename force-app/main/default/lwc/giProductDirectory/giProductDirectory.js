@@ -1,4 +1,4 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, wire, track, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import searchProducts from '@salesforce/apex/GIProductController.searchProducts';
 import getProductCount from '@salesforce/apex/GIProductController.getProductCount';
@@ -17,7 +17,7 @@ export default class GiProductDirectory extends NavigationMixin(LightningElement
     selectedOriginState = '';
     
     // Pagination
-    pageSize = 12;
+    @api pageSize = 12;
     currentPage = 1;
     totalPages = 0;
     
@@ -153,8 +153,16 @@ export default class GiProductDirectory extends NavigationMixin(LightningElement
         return this.currentPage > 1;
     }
     
+    get isPreviousPageDisabled() {
+        return !this.hasPreviousPage;
+    }
+    
     get hasNextPage() {
         return this.currentPage < this.totalPages;
+    }
+    
+    get isNextPageDisabled() {
+        return !this.hasNextPage;
     }
     
     get pageInfo() {

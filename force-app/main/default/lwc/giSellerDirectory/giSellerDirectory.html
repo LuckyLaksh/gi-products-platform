@@ -19,7 +19,7 @@
                                             <template if:true={seller.Seller_Badge__c}>
                                                 <lightning-badge 
                                                     label={seller.Seller_Badge__c} 
-                                                    class={getBadgeClass(seller.Seller_Badge__c)}>
+                                                    class={seller.badgeClass}>
                                                 </lightning-badge>
                                             </template>
                                         </div>
@@ -71,12 +71,12 @@
                                 <lightning-button
                                     label="Previous"
                                     onclick={handlePreviousPage}
-                                    disabled={!hasPreviousPage}>
+                                    disabled={isPreviousPageDisabled}>
                                 </lightning-button>
                                 <lightning-button
                                     label="Next"
                                     onclick={handleNextPage}
-                                    disabled={!hasNextPage}>
+                                    disabled={isNextPageDisabled}>
                                 </lightning-button>
                             </lightning-button-group>
                         </div>

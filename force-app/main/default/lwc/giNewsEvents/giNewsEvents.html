@@ -20,7 +20,7 @@
                                     <template if:true={item.Event_Date__c}>
                                         <p class="slds-text-body_small slds-text-color_weak">
                                             <lightning-icon icon-name="utility:date_time" size="x-small" class="slds-m-right_xx-small"></lightning-icon>
-                                            {formatDate(item.Event_Date__c)}
+                                            {item.formattedDate}
                                         </p>
                                     </template>
                                     <template if:true={item.Description__c}>
