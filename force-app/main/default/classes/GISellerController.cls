@@ -11,8 +11,8 @@ public with sharing class GISellerController {
         return [
             SELECT Id, Name, Email, Phone, MailingCity, MailingState,
                    Verification_Status__c, Seller_Badge__c, Seller_Rating__c,
-                   (SELECT Id, Name, Product2Id, Product2.Name, Product2.Product_Type__c,
-                           Product2.GI_Status__c, Product2.Origin_State__c
+                   (SELECT Id, Opportunity.Product__r.Name, Opportunity.Product__r.Product_Type__c,
+                           Opportunity.Product__r.GI_Status__c, Opportunity.Product__r.Origin_State__c
                     FROM OpportunityContactRoles
                     WHERE IsPrimary = true
                     LIMIT 5)
@@ -33,9 +33,9 @@ public with sharing class GISellerController {
             SELECT Id, Name, Email, Phone, MailingStreet, MailingCity,
                    MailingState, MailingPostalCode, MailingCountry,
                    Verification_Status__c, Seller_Badge__c, Seller_Rating__c,
-                   (SELECT Id, Name, Product2Id, Product2.Name, Product2.Description,
-                           Product2.Product_Type__c, Product2.GI_Status__c,
-                           Product2.Origin_State__c, Product2.Origin_City__c
+                   (SELECT Id, Opportunity.Product__r.Name, Opportunity.Product__r.Description,
+                           Opportunity.Product__r.Product_Type__c, Opportunity.Product__r.GI_Status__c,
+                           Opportunity.Product__r.Origin_State__c, Opportunity.Product__r.Origin_City__c
                     FROM OpportunityContactRoles
                     WHERE IsPrimary = true)
             FROM Contact
