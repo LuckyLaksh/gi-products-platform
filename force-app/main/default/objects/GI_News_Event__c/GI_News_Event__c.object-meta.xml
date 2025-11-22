@@ -18,7 +18,6 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <labelPlural>GI News & Events</labelPlural>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>
 
