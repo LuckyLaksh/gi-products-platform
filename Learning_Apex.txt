@@ -1,0 +1,1522 @@
+Apex Mastery Programs: 
+
+1. Object-Oriented Programming (OOP)
+Encapsulation : Hiding the internal state of an object and only exposing controlled access
+
+Basic class with private variables and public getters/setters (e.g., BankAccount with balance)
+
+Getters retrieve private data, while setters allow controlled updates to that data.
+They help enforce data validation, ensuring only appropriate values are assigned.
+Direct access to fields is prevented, reducing accidental data corruption or misuse.
+This approach increases code maintainability, flexibility, and security.
+
+public class BankAccount {
+    public String BankName;
+    private Decimal accountBalance;
+    private Integer accountNumber;
+    private String AccountHolderName;
+
+    public Decimal getAccountBalance() {
+        return accountBalance;
+    }
+
+    public Integer getAccountNumber() {
+        return accountNumber;
+    }
+
+    public String getAccountHolderName() {
+        return AccountHolderName;
+    }
+
+    public void setAccountBalance(Decimal amount) {
+        if(amount >= 0) {
+            this.accountBalance = amount;
+        } else {
+            throw new IllegalArgumentException('Balance cannot be negative');
+        }
+    }
+
+    public void setAccountNumber(Integer accNum) {
+        this.accountNumber = accNum;
+    }
+
+    public void setAccountHolderName(String name) {
+        this.AccountHolderName = name;
+    }
+}
+
+
+Modifying internal state safely via methods (e.g., deposit/withdraw for BankAccount)
+
+Controlling how an object's data or variables are changed. This is done by using specific functions (methods) instead of allowing direct access to internal variables. 
+Such methods can enforce rules, validate inputs, or trigger other necessary operations. 
+This approach helps maintain the integrity and consistency of the object's data over time.
+
+Safely via methods
+public class BankAccount {
+    // Private variable hides internal state
+    private Decimal balance;
+    
+    // Constructor initializes balance
+    public BankAccount(Decimal initialBalance) {
+        this.balance = initialBalance;
+    }
+    
+    // Method safely modifies internal state
+    public void deposit(Decimal amount) {
+        // Validates input to ensure only positive deposits
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+    
+    // Method to read the state in a controlled way
+    public Decimal getBalance() {
+        return balance;
+    }
+}
+
+Unsafe State Modification Example 
+
+public class BankAccountUnsafe {
+    // Public variable exposes internal state directly
+    public Decimal balance;
+    
+    public BankAccountUnsafe(Decimal initialBalance) {
+        this.balance = initialBalance;
+    }
+}
+// External code can now modify balance without any checks or logic:
+// BankAccountUnsafe acct = new BankAccountUnsafe(100);
+// acct.balance = -500; // Unsafely puts account in invalid state
+
+
+
+
+
+Read-only properties using private set (e.g., Employee with immutable employeeId)
+Read-only properties using a private setter allow data to be set within the class but prevent changes from outside. 
+public class Employee {
+    // Read-only property with a private setter
+    public final String employeeId;
+    public String name;
+
+    // employeeId set only at construction and cannot be changed later
+    public Employee(String empId, String name) {
+        this.employeeId = empId;
+        this.name = name;
+    }
+}
+// Usage:
+// Employee emp = new Employee('E123', 'Alice');
+// emp.employeeId = 'E456'; // Compilation error – property is read-only
+
+// employeeId is set once in constructor and cannot be changed after.
+// This protects the object's integrity, ensuring the employee's identity never changes after creation.
+
+Using inner classes for scoping (e.g., Order with OrderItem inner class)
+public class Order {
+    public String orderNumber;
+    public List<OrderItem> items = new List<OrderItem>();
+
+    public Order(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    // Inner class scoped within Order, not directly accessible outside
+    public class OrderItem {
+        public String productName;
+        public Integer quantity;
+
+        public OrderItem(String productName, Integer quantity) {
+            this.productName = productName;
+            this.quantity = quantity;
+        }
+    }
+
+    public void addItem(String productName, Integer quantity) {
+        items.add(new OrderItem(productName, quantity));
+    }
+}
+
+// Usage:
+// Order order = new Order('O1001');
+// order.addItem('Laptop', 2);
+// // Can't create OrderItem directly from outside: new Order.OrderItem() is only valid inside Order context.
+
+OrderItem is tightly scoped within Order to prevent misuse elsewhere.
+This design emphasizes that OrderItem exists only as part of an Order, keeping implementation details encapsulated and clear.
+
+
+Using inner classes for scoping keeps related functionality bundled together, improving encapsulation and code organization. An inner class, like OrderItem inside Order, is only meaningful within the context of its outer class.
+
+Using inner classes in Apex enhances encapsulation by restricting the visibility of helper or component classes to their enclosing context. An inner class bundles related functionality, making maintenance and logical grouping easier.
+It signals that the inner class should only be used as part of the outer class, improving code organization.
+This design reduces accidental misuse and changes the way responsibilities are modeled in code.
+
+A classic example is placing OrderItem inside the Order class, clarifying that an item is conceptually linked to an order.
+public class Order {
+    public String orderId;
+    public List<OrderItem> items;
+
+    // Constructor initializes orderId and item list
+    public Order(String orderId) {
+        this.orderId = orderId;
+        this.items = new List<OrderItem>();
+    }
+
+    // Inner class: Only meaningful within the context of its enclosing Order
+    public class OrderItem {
+        public String productName;
+        public Integer quantity;
+
+        // Constructor initializes product and quantity
+        public OrderItem(String productName, Integer quantity) {
+            this.productName = productName;
+            this.quantity = quantity;
+        }
+    }
+
+    // Adds a new OrderItem to the order's item list
+    public void addItem(String productName, Integer quantity) {
+        items.add(new OrderItem(productName, quantity));
+    }
+}
+
+// Usage example:
+// Order order = new Order('O-1001');
+// order.addItem('Monitor', 2);
+// // Note: OrderItem can't be created outside Order context, keeping it scoped and organized.
+
+This code defines an Order class representing a customer order, with an inner class OrderItem that only makes sense within an order’s context. By making OrderItem an inner class, its scope is naturally limited and its use is logically grouped with Order, enhancing both structure and maintainability.
+
+Encapsulation with validation logic (e.g., setting age with checks in Person)
+
+Encapsulation involves bundling data (fields) with methods that control access or mutation, often through properties or setters.
+Validation logic inside setters or methods ensures fields only hold valid data, protecting object integrity.
+For example, setting age should check that values are reasonable (e.g., non-negative and not excessively large).
+Direct access to the underlying field is restricted, forcing use of the validation logic.
+This approach helps catch errors early and makes the class safer to use.
+
+public class Person
+{
+    private int age; // Private field to store the person's age
+
+    // Public property exposes age but only allows safe values through set
+    public int Age
+    {
+        get { return age; }
+        set
+        {
+            // Validation: age must be between 0 and 150
+            if (value < 0 || value > 150)
+            {
+                throw new ArgumentOutOfRangeException(nameof(Age), "Age must be between 0 and 150.");
+            }
+            age = value;
+        }
+    }
+
+    // Optional: constructor that uses the property for assigning initial value
+    public Person(int initialAge)
+    {
+        this.Age = initialAge;
+    }
+}
+
+// Usage example:
+// Person p = new Person(25); // Valid age
+// p.Age = -5; // Throws exception due to invalid age
+This Person class uses a private age field to hide direct access, exposing it through a property that enforces validation for realistic human ages. All attempts to set the Age property must pass the validation logic, ensuring only acceptable values are assigned—demonstrating classic encapsulation with built-in data protection.
+
+
+Inheritance
+
+Base class (Shape) and subclasses (Circle, Rectangle), each overriding an area() method
+
+Inheritance allows a base class (like Shape) to define a common structure and interface for related subclasses.
+Subclasses (Circle, Rectangle) extend the base class, specializing its behavior for particular shapes.
+Overriding enables each subclass to provide its own logic for methods like area().
+Polymorphism lets you interact with different shapes through a unified interface, improving flexibility.
+This pattern makes code organization, reuse, and extension easier when modeling real-world hierarchies.
+
+public virtual class Shape {
+    // Base area method, can be overridden by subclasses
+    public virtual Decimal area() {
+        return 0;
+    }
+}
+
+public class Circle extends Shape {
+    private Decimal radius;
+
+    public Circle(Decimal radius) {
+        this.radius = radius;
+    }
+
+    // Override area to calculate circle area
+    public override Decimal area() {
+        // Area = π * r^2, Apex has Math.PI()
+        return Math.PI * radius * radius;
+    }
+}
+
+public class Rectangle extends Shape {
+    private Decimal width, height;
+
+    public Rectangle(Decimal width, Decimal height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    // Override area to calculate rectangle area
+    public override Decimal area() {
+        return width * height;
+    }
+}
+
+// Example usage (can be in an execute anonymous block):
+// Shape s1 = new Circle(3);
+// System.debug(s1.area()); // Outputs area of circle
+// Shape s2 = new Rectangle(4, 5);
+// System.debug(s2.area()); // Outputs area of rectangle
+
+The Shape base class defines a general interface for calculating area. Subclasses Circle and Rectangle inherit from Shape and override the area() method to provide shape-specific formulas. This enables polymorphic behavior and allows shapes to be managed through a common interface, improving code flexibility and maintainability.
+
+Hierarchical inheritance (e.g., Vehicle -> Car, Truck)
+Hierarchical inheritance occurs when multiple subclasses inherit from a single parent class.
+The parent class (Vehicle) defines common properties or methods all subclasses share.
+Each subclass (Car, Truck) adds or customizes features unique to its type.
+This structure boosts code reuse, clarity, and consistency when modeling related objects.
+It’s widely used in object-oriented designs to represent real-world categories and subcategories.
+
+public virtual class Vehicle {
+    public String make;
+    public String model;
+
+    // Constructor assigns basic vehicle properties
+    public Vehicle(String make, String model) {
+        this.make = make;
+        this.model = model;
+    }
+
+    // Method to be optionally overridden by subclasses
+    public virtual String vehicleType() {
+        return 'Generic Vehicle';
+    }
+}
+
+public class Car extends Vehicle {
+    public Integer numberOfDoors;
+
+    public Car(String make, String model, Integer numberOfDoors) {
+        super(make, model);
+        this.numberOfDoors = numberOfDoors;
+    }
+
+    public override String vehicleType() {
+        return 'Car';
+    }
+}
+
+public class Truck extends Vehicle {
+    public Decimal payloadCapacity;
+
+    public Truck(String make, String model, Decimal payloadCapacity) {
+        super(make, model);
+        this.payloadCapacity = payloadCapacity;
+    }
+
+    public override String vehicleType() {
+        return 'Truck';
+    }
+}
+
+// Example usage (in execute anonymous window):
+// Vehicle v1 = new Car('Toyota', 'Camry', 4);
+// System.debug(v1.vehicleType()); // Outputs 'Car'
+// Vehicle v2 = new Truck('Ford', 'F-150', 1000.5);
+// System.debug(v2.vehicleType()); // Outputs 'Truck'
+
+
+In this Apex example, Vehicle is the base class for shared fields like make and model. Car and Truck extend Vehicle, inheriting these properties while defining their own specific attributes and behaviors. 
+This classic hierarchical inheritance arranges related types in a clear structure, enabling both code reuse and logical organization
+
+
+Use of super keyword to extend base constructors (e.g., PremiumCustomer extending Customer)
+
+The super keyword in Apex allows a subclass to call its parent class’s constructor or methods.
+This ensures that base class initialization logic runs before additional subclass-specific setup.
+Using super streamlines code reuse and consistency for shared attributes.
+It’s especially valuable when the parent constructor has parameters or important logic.
+A common pattern: PremiumCustomer calls the Customer constructor with super() first, then adds its own fields.
+
+public class Customer {
+    public String name;
+    public String email;
+
+    // Base constructor for all customers
+    public Customer(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+}
+
+public class PremiumCustomer extends Customer {
+    public Decimal loyaltyPoints;
+
+    // Constructor for PremiumCustomer extends the base Customer constructor
+    public PremiumCustomer(String name, String email, Decimal loyaltyPoints) {
+        // Calls the Customer constructor to set common fields
+        super(name, email);
+        // Sets additional fields unique to PremiumCustomer
+        this.loyaltyPoints = loyaltyPoints;
+    }
+}
+
+// Usage example (run in Execute Anonymous):
+// PremiumCustomer pc = new PremiumCustomer('Jane Doe', 'jane@abc.com', 123.45);
+// System.debug(pc.name);          // 'Jane Doe'
+// System.debug(pc.loyaltyPoints); // 123.45
+
+Explanation:
+In this Apex example, PremiumCustomer extends Customer and uses super(name, email) to initialize inherited fields, ensuring all base logic runs first. Afterward, it sets its own loyaltyPoints property. 
+This pattern makes subclass construction concise and maintains proper base initialization.
+
+Method overriding vs. overloading demonstration
+Method Overriding happens when a subclass provides its own implementation of a method defined in its superclass, using the same method signature.
+Method Overloading involves defining multiple methods in the same class with the same name but different parameter lists (types or number of parameters).
+Overriding supports polymorphism and dynamic behavior—subclass methods replace or extend superclass logic.
+Overloading improves convenience and readability by allowing methods to handle different argument combinations.
+Both enhance code flexibility but serve distinct purposes in object-oriented design.
+
+// Method Overriding Example
+
+public virtual class Animal {
+    public virtual String speak() {
+        return 'Some generic animal sound';
+    }
+}
+
+public class Dog extends Animal {
+    // Overriding the speak() method
+    public override String speak() {
+        return 'Woof!';
+    }
+}
+
+// Method Overloading Example
+
+public class Calculator {
+    // Adds two integers
+    public Integer add(Integer a, Integer b) {
+        return a + b;
+    }
+    
+    // Overloaded add: Adds three integers (different parameter count)
+    public Integer add(Integer a, Integer b, Integer c) {
+        return a + b + c;
+    }
+    
+    // Overloaded add: Adds two decimals (different types)
+    public Decimal add(Decimal a, Decimal b) {
+        return a + b;
+    }
+}
+
+// Usage Examples (run in Execute Anonymous):
+// Overriding:
+Animal a = new Dog();
+System.debug(a.speak()); // Outputs 'Woof!'
+
+// Overloading:
+Calculator calc = new Calculator();
+System.debug(calc.add(2, 3));         // Outputs 5
+System.debug(calc.add(2, 3, 4));      // Outputs 9
+System.debug(calc.add(2.5, 3.5));     // Outputs 6.0
+
+Summary:
+
+In the Animal example, the Dog subclass overrides the speak() method, giving custom behavior.
+In the Calculator example, multiple add methods are overloaded with different parameter signatures, enabling various addition scenarios.
+
+
+An abstract class in Apex can’t be directly instantiated and usually contains abstract methods (without implementation) that must be implemented by subclasses.
+Abstract classes provide a blueprint for concrete subclasses, enforcing certain methods or properties.
+Concrete subclasses implement the abstract methods and can be instantiated.
+This pattern ensures all child classes share a consistent interface but can differ in behavior.
+Example: PaymentMethod defines an abstract processPayment() method; CreditCardPayment implements it.
+// Abstract class representing the concept of a payment method
+public abstract class PaymentMethod {
+    // Abstract method: must be implemented by all subclasses
+    public abstract void processPayment(Decimal amount);
+}
+
+// Concrete child class: must implement the abstract method
+public class CreditCardPayment extends PaymentMethod {
+    public String cardNumber;
+    public String cardHolder;
+
+    public CreditCardPayment(String cardNumber, String cardHolder) {
+        this.cardNumber = cardNumber;
+        this.cardHolder = cardHolder;
+    }
+
+    // Implement the abstract method with actual logic
+    public override void processPayment(Decimal amount) {
+        // In real world, logic would be more complex (call gateway, etc.)
+        System.debug('Processing credit card payment for ' + amount + ' by ' + cardHolder);
+    }
+}
+
+// Usage example (run in Execute Anonymous):
+// PaymentMethod pm = new CreditCardPayment('4111111111111111', 'Alice Smith');
+// pm.processPayment(200.00); 
+Explanation:
+
+PaymentMethod is an abstract class; you can’t use new PaymentMethod().
+CreditCardPayment extends PaymentMethod and provides the processPayment implementation.
+This guarantees that all payment method subclasses (like CreditCardPayment, PaypalPayment, etc.) promise to implement processPayment() as required.
+
+Polymorphism
+
+Parent-type variables holding child class objects, invoking overridden methods
+In Apex, you can declare a variable of a parent class type and assign it an instance of a child class.
+When you call an overridden method using this parent reference, the child class's method executes (dynamic or runtime polymorphism).
+This pattern maximizes code flexibility: you can work with objects via their shared interface but retain specific behaviors.
+It’s especially useful in systems (like banking) where multiple account types behave differently but share common operations.
+Example: An abstract Account class with overridden calculateInterest() in each child account type.
+public abstract class Account {
+    public String accountNumber;
+    public Decimal balance;
+    
+    public Account(String accountNumber, Decimal balance) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+    }
+    
+    public abstract Decimal calculateInterest();
+}
+
+public class SavingsAccount extends Account {
+    public Decimal interestRate = 0.05;
+    
+    public SavingsAccount(String accountNumber, Decimal balance) {
+        super(accountNumber, balance);
+    }
+    
+    public override Decimal calculateInterest() {
+        // Simple interest calculation for savings account
+        return balance * interestRate;
+    }
+}
+
+public class CurrentAccount extends Account {
+    public Decimal interestRate = 0.01;
+    
+    public CurrentAccount(String accountNumber, Decimal balance) {
+        super(accountNumber, balance);
+    }
+    
+    public override Decimal calculateInterest() {
+        // Lower interest for current account
+        return balance * interestRate;
+    }
+}
+
+// Usage demonstration (run in Execute Anonymous):
+// Parent-type variable holding child class object
+Account acc1 = new SavingsAccount('SA001', 10000);
+Account acc2 = new CurrentAccount('CA001', 15000);
+
+System.debug('SavingsAccount interest: ' + acc1.calculateInterest()); // Outputs 500.00
+System.debug('CurrentAccount interest: ' + acc2.calculateInterest()); // Outputs 150.00
+
+// Even though acc1/acc2 are Account type, the overridden calculateInterest() of the child runs
+
+The Account class is abstract and defines mandatory structure.
+SavingsAccount and CurrentAccount inherit from Account and override its calculateInterest() logic.
+Even though acc1 and acc2 are declared as Account, when you call calculateInterest(), Apex executes the child class's overridden method—demonstrating polymorphism.
+
+Array of base-class objects storing different child types, iterating to call methods
+
+You can declare a List of a base class (Account) and store instances of any classes that extend it (SavingsAccount, CurrentAccount, etc.).
+When iterating over the list and calling an overridden method (e.g., calculateInterest()), the specific child class’s method runs for each object.
+This enables flexible and scalable code; you can easily handle new account types by adding more subclasses without changing your list logic.
+It’s especially useful in banking or financial systems handling multiple account types with common operations.
+This pattern keeps code DRY (Don’t Repeat Yourself) and perfectly utilizes polymorphism.
+
+public abstract class Account {
+    public String accountNumber;
+    public Decimal balance;
+    public Account(String accountNumber, Decimal balance) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+    }
+    public abstract Decimal calculateInterest();
+}
+
+public class SavingsAccount extends Account {
+    public SavingsAccount(String accountNumber, Decimal balance) {
+        super(accountNumber, balance);
+    }
+    public override Decimal calculateInterest() {
+        return balance * 0.05; // 5% interest
+    }
+}
+
+public class CurrentAccount extends Account {
+    public CurrentAccount(String accountNumber, Decimal balance) {
+        super(accountNumber, balance);
+    }
+    public override Decimal calculateInterest() {
+        return balance * 0.01; // 1% interest
+    }
+}
+
+// Example: Array/List of base-class objects holding different child objects
+List<Account> accounts = new List<Account>();
+accounts.add(new SavingsAccount('SA123', 10000));
+accounts.add(new CurrentAccount('CA456', 20000));
+accounts.add(new SavingsAccount('SA789', 25000));
+
+// Iterate and invoke overridden methods
+for (Account acc : accounts) {
+    System.debug('Account ' + acc.accountNumber + ': Interest = ' + acc.calculateInterest());
+}
+
+The accounts list holds both SavingsAccount and CurrentAccount objects.
+When you loop through the list and call calculateInterest(), Apex executes the method based on the true object type for each item.
+This means your banking logic can process mixed account types seamlessly, without needing to know specifics at loop time.
+
+
+Store multiple child-class objects (SavingsAccount, CurrentAccount, etc.) in a single list typed to the base class (Account).
+When you iterate and call an overridden method (like calculateInterest()), the correct child method runs for each object.
+This supports flexible, scalable code—as new account types are added, no change in iteration logic is needed.
+Polymorphism enables treating different account types uniformly, while each behaves according to its subclass logic.
+This is a best practice for handling operations across varied entity types sharing a common interface.
+
+public abstract class Account {
+    public String accountNumber;
+    public Decimal balance;
+    public Account(String accountNumber, Decimal balance) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+    }
+    public abstract Decimal calculateInterest();
+}
+
+public class SavingsAccount extends Account {
+    public SavingsAccount(String accountNumber, Decimal balance) {
+        super(accountNumber, balance);
+    }
+    public override Decimal calculateInterest() {
+        return balance * 0.05; // 5% savings account interest
+    }
+}
+
+public class CurrentAccount extends Account {
+    public CurrentAccount(String accountNumber, Decimal balance) {
+        super(accountNumber, balance);
+    }
+    public override Decimal calculateInterest() {
+        return balance * 0.01; // 1% current account interest
+    }
+}
+
+// Example usage: array of base-class objects with different child types
+List<Account> accountList = new List<Account>{
+    new SavingsAccount('SA123', 10000),
+    new CurrentAccount('CA456', 20000),
+    new SavingsAccount('SA789', 30000)
+};
+
+for (Account acc : accountList) {
+    System.debug('Account Number: ' + acc.accountNumber +
+                 ', Interest: ' + acc.calculateInterest());
+}
+// Output:
+// Account Number: SA123, Interest: 500.0
+// Account Number: CA456, Interest: 200.0
+// Account Number: SA789, Interest: 1500.0
+
+You maintain a single List<Account> that can flexibly hold any future account types.
+The for-loop calls calculateInterest() on each, with run-time dispatch ensuring correct interest logic for each account type.
+This structure minimizes maintenance and error-prone code as your system grows.
+
+Interface usage for different payment options (Payable interface for multiple payment classes)
+
+
+An interface in Apex defines a set of method signatures that must be implemented by any class using it, but provides no logic itself.
+Interfaces enable polymorphism: code can interact with objects implementing the interface, regardless of their specific type.
+This is ideal for payment systems, where each payment type should promise the same operations (e.g., makePayment()), but the logic differs.
+Adding new payment options only requires a new implementation of the Payable interface, not code changes elsewhere.
+A list of Payable objects can process multiple payment types uniformly.
+// 1. Define a Payable interface
+public interface Payable {
+    void makePayment(Decimal amount);
+}
+
+// 2. Credit Card payment class implementing Payable
+public class CreditCardPayment implements Payable {
+    public String cardNumber;
+    public String cardHolder;
+
+    public CreditCardPayment(String cardNumber, String cardHolder) {
+        this.cardNumber = cardNumber;
+        this.cardHolder = cardHolder;
+    }
+
+    public void makePayment(Decimal amount) {
+        System.debug('Credit card payment of ' + amount + ' by ' + cardHolder);
+    }
+}
+
+// 3. PayPal payment class implementing Payable
+public class PaypalPayment implements Payable {
+    public String email;
+
+    public PaypalPayment(String email) {
+        this.email = email;
+    }
+
+    public void makePayment(Decimal amount) {
+        System.debug('PayPal payment of ' + amount + ' from account ' + email);
+    }
+}
+
+// 4. Cryptocurrency payment class implementing Payable
+public class CryptoPayment implements Payable {
+    public String walletId;
+
+    public CryptoPayment(String walletId) {
+        this.walletId = walletId;
+    }
+
+    public void makePayment(Decimal amount) {
+        System.debug('Crypto payment of ' + amount + ' from wallet ' + walletId);
+    }
+}
+
+// Usage demo (run in Execute Anonymous):
+List<Payable> payments = new List<Payable>{
+    new CreditCardPayment('4111111111111111', 'Jane Doe'),
+    new PaypalPayment('jane.doe@example.com'),
+    new CryptoPayment('crypto-wallet-xyz')
+};
+for (Payable p : payments) {
+    p.makePayment(100.00);
+}
+
+An interface defines a contract—methods all implementing classes must provide—but supplies no code.
+Classes like CreditCardPayment, PaypalPayment, and CryptoPayment all implement the same interface, so they can be processed polymorphically.
+You can keep a collection of the interface type and treat all payment options identically at processing time.
+This structure supports extensibility: adding new payment types only involves creating a new class implementing Payable.
+It's ideal in payment or transaction systems for uniform processing and code clarity.
+// Payable interface definition
+public interface Payable {
+    void makePayment(Decimal amount);
+}
+
+// Concrete class for credit card payments
+public class CreditCardPayment implements Payable {
+    public String cardNumber;
+    public CreditCardPayment(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+    public void makePayment(Decimal amount) {
+        System.debug('Credit card payment of ' + amount + ' using card ' + cardNumber);
+    }
+}
+
+// Concrete class for PayPal payments
+public class PaypalPayment implements Payable {
+    public String email;
+    public PaypalPayment(String email) {
+        this.email = email;
+    }
+    public void makePayment(Decimal amount) {
+        System.debug('PayPal payment of ' + amount + ' from ' + email);
+    }
+}
+
+// Concrete class for crypto payments
+public class CryptoPayment implements Payable {
+    public String walletId;
+    public CryptoPayment(String walletId) {
+        this.walletId = walletId;
+    }
+    public void makePayment(Decimal amount) {
+        System.debug('Crypto payment of ' + amount + ' from wallet ' + walletId);
+    }
+}
+
+// Usage: storing different payment types in a single list
+List<Payable> payments = new List<Payable>{
+    new CreditCardPayment('4111-xxxx-xxxx-1234'),
+    new PaypalPayment('alice@example.com'),
+    new CryptoPayment('WALLET123XYZ')
+};
+
+for (Payable p : payments) {
+    p.makePayment(100.00);
+}
+
+The interface ensures all payment types provide a makePayment() method.
+Storing them as List<Payable> enables flexible, unified processing.
+Adding a new payment method just means implementing the Payable interface, with no changes elsewhere.
+
+
+
+An interface defines a contract of methods without implementation.
+Each payment type (e.g., credit card, PayPal) implements the Payable interface.
+This lets you handle all payment types polymorphically using a single reference type.
+New payment options require only a new class that implements the interface.
+You can iterate over a list of Payable to process multiple payment types seamlessly
+
+public interface Payable {
+    void makePayment(Decimal amount);
+}
+
+public class CreditCardPayment implements Payable {
+    public String cardNumber;
+    public CreditCardPayment(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+    public void makePayment(Decimal amount) {
+        System.debug('Credit card payment of ' + amount + ' using ' + cardNumber);
+    }
+}
+
+public class PaypalPayment implements Payable {
+    public String email;
+    public PaypalPayment(String email) {
+        this.email = email;
+    }
+    public void makePayment(Decimal amount) {
+        System.debug('PayPal payment of ' + amount + ' from ' + email);
+    }
+}
+
+public class CryptoPayment implements Payable {
+    public String walletId;
+    public CryptoPayment(String walletId) {
+        this.walletId = walletId;
+    }
+    public void makePayment(Decimal amount) {
+        System.debug('Crypto payment of ' + amount + ' from wallet ' + walletId);
+    }
+}
+
+// Demonstration: store different payment types, process each
+List<Payable> payments = new List<Payable>{
+    new CreditCardPayment('4111-xxxx-xxxx-1111'),
+    new PaypalPayment('user@example.com'),
+    new CryptoPayment('crypto-wallet-abc')
+};
+for (Payable p : payments) {
+    p.makePayment(250.00);
+}
+
+The Payable interface enforces a consistent makePayment() method.
+Each class implements this method in its own way.
+The list of Payable allows you to process all payment types with the same logic, demonstrating polymorphism and flexibility.
+
+
+An interface in Apex defines required methods without implementation.
+Each payment type (credit card, PayPal, crypto, etc.) implements the same makePayment() method per the Payable interface.
+You can store any implementing class in a collection of the interface type.
+This lets you process payments generically, regardless of their underlying type.
+This is ideal for extensible and maintainable payment processing systems
+
+public interface Payable {
+    void makePayment(Decimal amount);
+}
+
+public class CreditCardPayment implements Payable {
+    public String cardNumber;
+    public CreditCardPayment(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+    public void makePayment(Decimal amount) {
+        System.debug('Processing credit card payment of ' + amount + ' with card ' + cardNumber);
+    }
+}
+
+public class PaypalPayment implements Payable {
+    public String accountEmail;
+    public PaypalPayment(String accountEmail) {
+        this.accountEmail = accountEmail;
+    }
+    public void makePayment(Decimal amount) {
+        System.debug('Processing PayPal payment of ' + amount + ' from account ' + accountEmail);
+    }
+}
+
+public class CryptoPayment implements Payable {
+    public String walletId;
+    public CryptoPayment(String walletId) {
+        this.walletId = walletId;
+    }
+    public void makePayment(Decimal amount) {
+        System.debug('Processing cryptocurrency payment of ' + amount + ' from wallet ' + walletId);
+    }
+}
+
+
+// Example: managing different payments polymorphically
+List<Payable> paymentList = new List<Payable>{
+    new CreditCardPayment('4111-xxxx-xxxx-1234'),
+    new PaypalPayment('user@example.com'),
+    new CryptoPayment('WALLET-XYZ-456')
+};
+
+for (Payable payment : paymentList) {
+    payment.makePayment(150.00);
+}
+
+Any class implementing the interface must provide the makePayment() method.
+You can add new payment types by simply implementing the interface—no changes to processing logic needed.
+The list allows iterating over all payment methods and treating them identically, while invoking their custom logic at runtime.
+
+
+An interface in Apex enforces a contract: all implementing classes must define specific methods.
+Multiple payment classes (e.g., credit card, PayPal, cryptocurrency) implement the Payable interface.
+You can hold all payment types in a single collection of type Payable.
+Calling a method on Payable executes the specific implementation for each payment type.
+This design allows easy expansion for future payment methods with minimal code change.
+
+public interface Payable {
+    void makePayment(Decimal amount);
+}
+
+public class CreditCardPayment implements Payable {
+    public String cardNumber;
+    public CreditCardPayment(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+    public void makePayment(Decimal amount) {
+        System.debug('Processing credit card payment: ' + amount +
+                     ', Card: ' + cardNumber);
+    }
+}
+
+public class PaypalPayment implements Payable {
+    public String paypalEmail;
+    public PaypalPayment(String paypalEmail) {
+        this.paypalEmail = paypalEmail;
+    }
+    public void makePayment(Decimal amount) {
+        System.debug('Processing PayPal payment: ' + amount +
+                     ', Email: ' + paypalEmail);
+    }
+}
+
+public class CryptoPayment implements Payable {
+    public String walletAddress;
+    public CryptoPayment(String walletAddress) {
+        this.walletAddress = walletAddress;
+    }
+    public void makePayment(Decimal amount) {
+        System.debug('Processing crypto payment: ' + amount +
+                     ', Wallet: ' + walletAddress);
+    }
+}
+
+// Usage: store and process various payment types
+List<Payable> paymentList = new List<Payable>{
+    new CreditCardPayment('1234-****-****-5678'),
+    new PaypalPayment('test@domain.com'),
+    new CryptoPayment('crypto-wallet-789')
+};
+
+for (Payable p : paymentList) {
+    p.makePayment(100.00);
+}
+
+All payment types implement the same makePayment() method as required by the Payable interface.
+Payments can be processed polymorphically within a loop, without knowing their specific type at compile time.
+Adding a new payment type (e.g., Apple Pay) just requires a new class implementing Payable.
+
+
+The Payable interface enforces that all payment classes implement makePayment().
+How the Payable Interface Enforces Implementation
+What Does “Enforces” Mean Here?
+
+When you define an interface in Apex, every class that declares implements Payable must provide its own complete version of every method listed in that interface.
+If a class claims to implement Payable but does not implement all its methods (e.g., forgets to provide makePayment()), Apex compilation will fail, and the system will prompt an error.
+This enforcement guarantees consistency across all payment classes and enables reliable polymorphism—your code can always expect a makePayment() capability from any Payable object.
+
+
+Polymorphism in Collections: List of shape types, each with area calculation
+Polymorphism allows parent-type collections (e.g., list of Shape) to hold different child objects (like Circle, Rectangle, Triangle).
+Each shape class implements a common contract (getArea()), so you can calculate the area for each polymorphically.
+This lets you write cleaner, more maintainable code—processing various shapes together without knowing their exact types.
+
+// Step 1: Define a Shape interface
+public interface Shape {
+    Decimal getArea();
+}
+
+// Step 2: Implement different shape types
+public class Circle implements Shape {
+    public Decimal radius;
+    public Circle(Decimal radius) { this.radius = radius; }
+    public Decimal getArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+public class Rectangle implements Shape {
+    public Decimal width;
+    public Decimal height;
+    public Rectangle(Decimal width, Decimal height) {
+        this.width = width; this.height = height;
+    }
+    public Decimal getArea() {
+        return width * height;
+    }
+}
+
+public class Triangle implements Shape {
+    public Decimal baseLen;
+    public Decimal height;
+    public Triangle(Decimal baseLen, Decimal height) {
+        this.baseLen = baseLen; this.height = height;
+    }
+    public Decimal getArea() {
+        return (baseLen * height) / 2;
+    }
+}
+
+// Step 3: Create a collection of different shapes and compute area
+List<Shape> shapes = new List<Shape>{
+    new Circle(3),
+    new Rectangle(4, 5),
+    new Triangle(6, 2)
+};
+
+for (Shape s : shapes) {
+    System.debug('Area: ' + s.getArea());
+}
+// Output:
+// Area: 28.274...
+// Area: 20
+// Area: 6
+
+Explanation
+
+The Shape interface ensures all shape types implement getArea().
+The shapes list holds various shape types but is declared as List<Shape>.
+When iterating through the list, calling getArea() invokes the right logic for each underlying shape—polymorphism in action!
+This makes it easy to add new shapes in the future, or process all shapes in one loop.
+
+Applying polymorphism to sort custom objects
+
+How Polymorphism Enables Sorting in Collections
+
+Comparable Interface: Apex’s Comparable interface enforces that any implementing class must supply a compareTo() method that defines how two objects are compared.
+Polymorphism: When you have a List<Comparable>, the runtime will call the correct compareTo() logic for each object—even if you have different subclasses.
+Practical Benefit: Sort complex objects (like orders by amount, shapes by area, students by grade) just by calling List.sort().
+
+Let's apply this using the previous shapes scenario—sorting a list of various shapes by their area (smallest to largest):
+
+// Step 1: Shape interface with area calculation
+public interface Shape {
+    Decimal getArea();
+}
+
+// Step 2: Make a wrapper class that is Comparable
+public class ComparableShape implements Shape, Comparable {
+    public Shape underlyingShape;
+    public ComparableShape(Shape s) { this.underlyingShape = s; }
+    public Decimal getArea() { return underlyingShape.getArea(); }
+    
+    // Required by Comparable
+    public Integer compareTo(Object obj) {
+        ComparableShape other = (ComparableShape)obj;
+        if (this.getArea() == other.getArea()) return 0;
+        return (this.getArea() < other.getArea()) ? -1 : 1;
+    }
+}
+
+// Step 3: Concrete shape implementations
+public class Circle implements Shape {
+    public Decimal radius;
+    public Circle(Decimal radius) { this.radius = radius; }
+    public Decimal getArea() { return Math.PI * radius * radius; }
+}
+public class Rectangle implements Shape {
+    public Decimal w; public Decimal h;
+    public Rectangle(Decimal w, Decimal h){ this.w=w; this.h=h;}
+    public Decimal getArea() { return w * h; }
+}
+public class Triangle implements Shape {
+    public Decimal b; public Decimal h;
+    public Triangle(Decimal b, Decimal h){ this.b=b; this.h=h;}
+    public Decimal getArea() { return (b * h) / 2; }
+}
+
+// Step 4: Populate, wrap, and sort
+List<ComparableShape> toSort = new List<ComparableShape>{
+    new ComparableShape(new Circle(2)),
+    new ComparableShape(new Rectangle(2, 7)),
+    new ComparableShape(new Triangle(5, 4))
+};
+toSort.sort(); // Sorts in ascending order by area
+
+for (ComparableShape cs : toSort) {
+    System.debug('Area: ' + cs.getArea());
+}
+// Output: Shape areas from smallest to largest
+
+Each shape implements Shape.
+ComparableShape wraps any Shape and implements Comparable, allowing it to be sorted by area.
+The compareTo() logic centralizes the comparison—polymorphic because any shape can be wrapped and thus sorted.
+You can use this same principle to sort custom objects like Account, Order, or Invoice by name, amount, or any other property—just implement Comparable and define your sort logic!
+
+
+
+
+
+Parameterized Constructors
+
+Class with multiple constructors (default + parameterized) (e.g., Book)
+
+Book Class with Default and Parameterized Constructors
+Concept Overview
+
+Default Constructor: Automatically provided by Apex if you define no constructors. If you define any constructor yourself, you must explicitly define a default one if you want both.
+Parameterized Constructor: Accepts arguments to immediately set object fields during instantiation.
+Benefit: Provides flexibility; you can create a book with preset values or supply details up front.
+
+public class Book {
+    public String title;
+    public String author;
+    public Decimal price;
+
+    // Default no-args constructor
+    public Book() {
+        this.title = 'Unknown';
+        this.author = 'Unknown';
+        this.price = 0.0;
+    }
+
+    // Parameterized constructor
+    public Book(String title, String author, Decimal price) {
+        this.title = title;
+        this.author = author;
+        this.price = price;
+    }
+}
+
+// Example usage:
+Book defaultBook = new Book();  // Uses default values
+System.debug('Default Book: ' + defaultBook.title + ', ' + defaultBook.author + ', $' + defaultBook.price);
+
+Book customBook = new Book('Clean Code', 'Robert Martin', 29.99);  // Uses custom values
+System.debug('Custom Book: ' + customBook.title + ', ' + customBook.author + ', $' + customBook.price);
+
+Explanation:
+
+The class provides two constructors: a default and a parameterized.
+When you create new Book(), it sets fields to default values.
+When you use new Book('Clean Code', 'Robert Martin', 29.99), it initializes the book with those values.
+This pattern is highly extensible and a standard for classes where objects can be created both with and without initial data.
+
+Constructor chaining (where one constructor calls another), or an example with additional fields or validation?
+public class Book {
+    public String title;
+    public String author;
+    public Decimal price;
+
+    // Default (no-argument) constructor
+    public Book() {
+        this.title = 'Untitled';
+        this.author = 'Unknown';
+        this.price = 0.0;
+    }
+
+    // Parameterized constructor
+    public Book(String title, String author, Decimal price) {
+        this.title = title;
+        this.author = author;
+        this.price = price;
+    }
+}
+
+// Example usage:
+Book defaultBook = new Book();  // Uses the default constructor
+System.debug('Default: ' + defaultBook.title + ', ' + defaultBook.author + ', ' + defaultBook.price);
+
+Book customBook = new Book('Dune', 'Frank Herbert', 18.99); // Uses parameterized constructor
+System.debug('Custom: ' + customBook.title + ', ' + customBook.author + ', ' + customBook.price);
+
+How this works:
+
+new Book() uses the default constructor, assigning placeholder values.
+new Book('Dune', 'Frank Herbert', 18.99) lets you specify all fields at creation.
+This flexibility is helpful whenever you want to create empty objects first (for later population) or construct fully-detailed objects immediately.
+
+Overloading constructors for different initialization scenarios
+
+public class Book {
+    public String title;
+    public String author;
+    public Decimal price;
+
+    // 1. Default constructor (no arguments)
+    public Book() {
+        this.title = 'Untitled';
+        this.author = 'Unknown';
+        this.price = 0.0;
+    }
+
+    // 2. Constructor with title and author only
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+        this.price = 0.0; // Default price
+    }
+
+    // 3. Constructor with all details
+    public Book(String title, String author, Decimal price) {
+        this.title = title;
+        this.author = author;
+        this.price = price;
+    }
+}
+
+// Example usage:
+Book b1 = new Book();                                         // Default values
+Book b2 = new Book('The Hobbit', 'J.R.R. Tolkien');           // Title and author, default price
+Book b3 = new Book('1984', 'George Orwell', 15.99);           // Full detail
+
+System.debug(b1.title + ', ' + b1.author + ', $' + b1.price); // Output: Untitled, Unknown, $0.0
+System.debug(b2.title + ', ' + b2.author + ', $' + b2.price); // Output: The Hobbit, J.R.R. Tolkien, $0.0
+System.debug(b3.title + ', ' + b3.author + ', $' + b3.price); // Output: 1984, George Orwell, $15.99
+
+Explanation
+
+Default constructor: Allows creation with no information.
+Title and author constructor: Use this if price isn’t always known up front.
+Full parameterized constructor: Enables full customization at object creation.
+Apex determines which constructor to call based on the number and type of parameters provided.
+
+Benefits of Constructor Overloading
+
+Flexibility: Users of your class can initialize objects the way that best suits their data availability.
+Clarity: Different service or data input pathways can point to the appropriate constructor.
+Maintainability: Reduces the need for lots of null checks or for “setup” methods after construction.
+
+Passing objects as constructor parameters (e.g., Student takes Department)
+
+Passing objects as constructor parameters enables composition in your class design, where one object contains another. 
+This promotes modularity and allows you to build complex types from simpler ones. 
+For instance, if each Student belongs to a Department, you can pass a Department object into the Student constructor to establish this relationship. 
+This technique increases flexibility and code reuse. It also lets you easily access associated data within your objects.
+
+public class Department {
+    public String name;
+    public Department(String name) { this.name = name; }
+}
+
+public class Student {
+    public String studentName;
+    public Department dept;
+    public Student(String studentName, Department dept) {
+        this.studentName = studentName;
+        this.dept = dept;
+    }
+}
+
+// Usage
+Department csDept = new Department('Computer Science');
+Student alice = new Student('Alice', csDept);
+System.debug(alice.studentName + ' -> ' + alice.dept.name); // Output: Alice -> Computer Science
+
+Using constructors for deep copies (e.g., copying an Order)
+A deep copy constructor creates a new object with the same data as the original, ensuring any referenced objects are also copied, not just their references. This prevents side effects from changes to the original or its nested objects. In Apex, you can define such a constructor by accepting another object as a parameter and duplicating all fields, including custom objects. This approach is ideal for objects like Order that include sub-objects (e.g., items, customer info). Deep copying promotes data integrity and safe manipulation of object graphs.
+public class OrderItem {
+    public String itemName;
+    public OrderItem(String itemName) {
+        this.itemName = itemName;
+    }
+    // Deep copy constructor
+    public OrderItem(OrderItem original) {
+        this.itemName = original.itemName;
+    }
+}
+
+public class Order {
+    public String orderNumber;
+    public List<OrderItem> items;
+    public Order(String orderNumber, List<OrderItem> items) {
+        this.orderNumber = orderNumber;
+        this.items = new List<OrderItem>();
+        for (OrderItem item : items) {
+            this.items.add(item);
+        }
+    }
+    // Deep copy constructor
+    public Order(Order original) {
+        this.orderNumber = original.orderNumber;
+        this.items = new List<OrderItem>();
+        for (OrderItem item : original.items) {
+            this.items.add(new OrderItem(item));
+        }
+    }
+}
+
+The Order deep copy constructor duplicates both the orderNumber and a new list of copied OrderItem objects. This ensures changes to copied items don't affect the originals since each nested object is recreated.
+
+
+Initializing immutable objects via constructor only (e.g., Config class)
+Initializing immutable objects exclusively via constructors ensures that their fields cannot be changed after creation. This pattern is common for classes like a Config object, where consistent, reliable values are necessary for security or integrity. By setting fields as final (if supported) or removing setters, you enforce immutability. All values are supplied at object creation, promoting thread safety and reducing bugs from unintended state changes.
+public class Config {
+    public final String environment;
+    public final String serviceEndpoint;
+    public final Integer timeout;
+
+    // Constructor to initialize all fields
+    public Config(String environment, String serviceEndpoint, Integer timeout) {
+        this.environment = environment;
+        this.serviceEndpoint = serviceEndpoint;
+        this.timeout = timeout;
+    }
+}
+
+// Usage example
+Config prodConfig = new Config('Production', 'https://api.example.com', 5000);
+System.debug(prodConfig.environment); // Output: Production
+
+All fields are set once via the constructor and can’t be modified after, ensuring the object stays constant throughout its lifecycle. This is ideal for configuration or constant-value objects.
+
+2. Control Structures
+Conditional Logic
+
+Multi-step if/else chain (e.g., grading calculator, score to grade)
+Nested if statements for validation (e.g., sign-up requirements)
+Switch case for day of week or user role handling
+Switch with fall-through logic and default cases
+Using ternary operator for compact decisions (e.g., even/odd)
+
+Loops
+
+Simple for loop iteration (sum of first n numbers)
+Enhanced for loop over arrays or collections
+While loop: user input simulation (e.g., guessing game)
+Do-while loop for at-least-once execution (e.g., continue until a valid email)
+Nested loops: matrix multiplication
+Breaking out of a loop with break under specific condition
+Using continue to skip elements (e.g., skip negative numbers in array)
+Reversing an array via looping
+Iterating backwards through a list
+
+
+3. Data Handling
+Arrays and Collections
+
+Initializing and populating an array
+Finding max/min in an array
+Removing duplicates from a List<Integer>
+Sorting a list of custom objects
+Using Map for key-value lookups (e.g., employeeId to Employee)
+Using Set to ensure unique elements (e.g., collecting unique emails)
+Working with List<Set<String>> for groupings
+Mapping product names to prices, updating values
+Iterating over a map’s keys/values
+
+Data Cleaning and Transformation
+
+Removing nulls from a list
+Standardizing string case across a list (e.g., making all uppercase)
+Filtering items based on conditions (e.g., extracting valid emails)
+Parsing a comma-separated string into a list
+Joining a list back into a single string
+Replacing or updating records in a collection
+Converting lists to sets and vice versa
+Aggregating quantities by category (custom tallying)
+Aligning two lists by value (merge join)
+Detecting palindrome strings in a list
+
+
+4. Object Creation and Record Management
+Object Instantiation
+
+Basic SObject creation (e.g., Account a = new Account(Name='Test');)
+Parameterized initialization of multiple fields
+Populating a list with several SObjects
+Cloning/copying records programmatically
+Bulk creation using for loop
+
+SOQL Queries
+
+Query with WHERE clause for single-criteria filtering
+ORDER BY ascending/descending on a field
+Limiting results with LIMIT
+Combining multiple criteria in WHERE
+Aggregate SOQL: COUNT(), SUM(), etc.
+Using IN clause for batch queries
+Subquery for related data (parent-child)
+Dynamic SOQL: constructing queries programmatically
+Querying based on relative dates (e.g., LAST_N_DAYS:30)
+Querying and processing picklist fields
+
+DML and CRUD Operations
+
+INSERT single and multiple records
+UPDATE records based on criteria
+DELETE records conditionally
+UPSERT with external IDs
+DML exception handling via try/catch
+Rollback transaction after a simulated failure
+Partial success/failure handling in bulk DML
+Retrieving and editing records fetched from SOQL
+Soft deleting using undelete
+Field updates across objects (e.g., updating all Contacts for an Account)
+
+
+5. Database Methodology
+Apex Database Class
+
+Database.insert vs. standard insert (error handling and partial success)
+Database.update with allOrNone set to false
+Database.delete with partial failure capture
+Using Database.saveResult for granular error logging
+Conditional upsert using Database methods
+Performing merge of records using Database.merge
+Database.emptyRecycleBin to fully remove records
+Using Database.rollback for transaction management
+Chained record operations with savepoints
+Simulating bulk operations with errors and recoveries
+
+
+
+
+
+The project should progress step-by-step and incorporate the Apex concepts previously outlined (OOP, control structures, data handling, record management, database methodology).
+Below, I’ll outline a hands-on, sequential exercise—think of it as a “guided project plan” for a Customer Order Management app. 
+This “mini CRM” mirrors a realistic use-case, providing practical experience with key Apex concepts (while keeping LWC components simple, just for display/input).
+
+Real-World Project Exercise: Customer Order Management App
+
+Project Overview
+Business Scenario:
+You will build an app for a fictional retail business to manage its customers, orders, and products. Employees should be able to:
+
+Create and view customers and their orders.
+Add and update order line items (products).
+See summaries and analytic data like top orders or customer stats.
+
+App Stack:
+
+Apex: Business logic, data processing, record management, and all backend operations.
+LWC: Simple components to list, view, and add/edit customers, orders, and basic analytic summaries (all data handling via Apex, no direct SOQL/DML in LWC).
+
+
+Project Exercise: Step-by-Step Plan
+
+STEP 1: Data Model & SObject Creation
+Focus: Record Management, Object Creation, Encapsulation
+
+Define SObjects:
+
+Customer (Name, Email, Phone)
+Product (Name, Price)
+Order (Customer lookup, OrderDate, Status)
+OrderLineItem (Order lookup, Product lookup, Quantity)
+
+
+Apex Exercise: Create sample records programmatically, use constructors and encapsulation via Apex classes for object wrapping/validation.
+
+
+STEP 2: Data Listing and Basic SOQL
+Focus: SOQL Queries, Data Handling, Conditional Logic
+
+Apex Exercise:
+
+Write Apex methods/classes to retrieve:
+
+All customers
+All products
+All orders for a specific customer (parameterized SOQL)
+
+
+Use WHERE, ORDER BY clauses, and limit results for summary views.
+
+
+LWC: Create simple LWC (list view component) for each object, displaying returned data.
+
+
+STEP 3: Object-Oriented Business Logic
+Focus: Inheritance, Polymorphism, Real-World Methods
+
+Apex Exercise:
+
+Implement business logic classes: e.g. OrderCalculator for calculating totals, discounts, taxes (use inheritance and polymorphism where appropriate).
+Use parameterized constructors for order creation (e.g., default vs. express order).
+Add encapsulation for validation—e.g., prevent creating an order with no line items.
+
+
+
+
+STEP 4: Data Manipulation & Update Operations
+Focus: Collections, Control Structures, DML, Data Cleaning
+
+
+Apex Exercise:
+
+Methods to:
+
+Add a line item to an order (existing or new)
+Remove duplicates items before insert
+Update order status (e.g., “Submitted”, “Shipped”, “Cancelled”)
+Clean incomplete orders (missing required info)
+
+
+Use loops, maps, and sets for efficient processing.
+
+
+
+LWC: Add form component for creating/editing orders; use Apex (via wire/call) for updates.
+
+
+
+STEP 5: Analytics, Aggregation, & Advanced SOQL
+Focus: Aggregate Queries, Data Transformation, Reporting
+
+Apex Exercise:
+
+Compute and return top customers by sales volume.
+List top-selling products.
+Present daily order counts (group by date).
+Write code for analytic queries and transform results into display-ready formats.
+
+
+LWC: Add a dashboard card/list component to show these analytics.
+
+
+STEP 6: Robust Error Handling & Transaction Management
+Focus: Database Class, DML Error Handling, Savepoints
+
+Apex Exercise:
+
+Use Database methods with partial success (Database.insert([...], false)).
+Implement savepoints and rollbacks around critical batch updates.
+Log errors using custom error classes.
+
+
+
+
+STEP 7: Final Polishing & Security
+Focus: Enforcing Access, Defensive Programming
+
+Apex Exercise:
+
+Add methods to ensure only the owner can modify their orders.
+Filter out records not viewable by the running user.
+
+
+
+
