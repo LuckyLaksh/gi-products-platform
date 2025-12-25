@@ -11,7 +11,7 @@ Getters retrieve private data, while setters allow controlled updates to that da
 They help enforce data validation, ensuring only appropriate values are assigned.
 Direct access to fields is prevented, reducing accidental data corruption or misuse.
 This approach increases code maintainability, flexibility, and security.
-
+```apex
 public class BankAccount {
     public String BankName;
     private Decimal accountBalance;
@@ -34,7 +34,6 @@ public class BankAccount {
         if(amount >= 0) {
             this.accountBalance = amount;
 
-```apex
         } else {
             throw new IllegalArgumentException('Balance cannot be negative');
         }
@@ -49,7 +48,7 @@ public class BankAccount {
     }
 }
 
-
+```
 Modifying internal state safely via methods (e.g., deposit/withdraw for BankAccount)
 
 Controlling how an object's data or variables are changed. This is done by using specific functions (methods) instead of allowing direct access to internal variables. 
@@ -57,6 +56,7 @@ Such methods can enforce rules, validate inputs, or trigger other necessary oper
 This approach helps maintain the integrity and consistency of the object's data over time.
 
 Safely via methods
+``` apex
 public class BankAccount {
     // Private variable hides internal state
     private Decimal balance;
@@ -79,9 +79,9 @@ public class BankAccount {
         return balance;
     }
 }
-
+```
 Unsafe State Modification Example 
-
+``` apex
 public class BankAccountUnsafe {
     // Public variable exposes internal state directly
     public Decimal balance;
