@@ -1,6 +1,8 @@
-Apex Mastery Programs: 
+# Apex Mastery Programs
 
-1. Object-Oriented Programming (OOP)
+
+# 1. Object-Oriented Programming (OOP)
+
 Encapsulation : Hiding the internal state of an object and only exposing controlled access
 
 Basic class with private variables and public getters/setters (e.g., BankAccount with balance)
@@ -31,6 +33,8 @@ public class BankAccount {
     public void setAccountBalance(Decimal amount) {
         if(amount >= 0) {
             this.accountBalance = amount;
+
+```apex
         } else {
             throw new IllegalArgumentException('Balance cannot be negative');
         }
@@ -89,9 +93,6 @@ public class BankAccountUnsafe {
 // External code can now modify balance without any checks or logic:
 // BankAccountUnsafe acct = new BankAccountUnsafe(100);
 // acct.balance = -500; // Unsafely puts account in invalid state
-
-
-
 
 
 Read-only properties using private set (e.g., Employee with immutable employeeId)
@@ -767,7 +768,6 @@ Storing them as List<Payable> enables flexible, unified processing.
 Adding a new payment method just means implementing the Payable interface, with no changes elsewhere.
 
 
-
 An interface defines a contract of methods without implementation.
 Each payment type (e.g., credit card, PayPal) implements the Payable interface.
 This lets you handle all payment types polymorphically using a single reference type.
@@ -1076,9 +1076,6 @@ The compareTo() logic centralizes the comparison—polymorphic because any shape
 You can use this same principle to sort custom objects like Account, Order, or Invoice by name, amount, or any other property—just implement Comparable and define your sort logic!
 
 
-
-
-
 Parameterized Constructors
 
 Class with multiple constructors (default + parameterized) (e.g., Book)
@@ -1292,7 +1289,9 @@ System.debug(prodConfig.environment); // Output: Production
 
 All fields are set once via the constructor and can’t be modified after, ensuring the object stays constant throughout its lifecycle. This is ideal for configuration or constant-value objects.
 
-2. Control Structures
+
+# 2. Control Structures
+
 Conditional Logic
 
 Multi-step if/else chain (e.g., grading calculator, score to grade)
@@ -1302,7 +1301,6 @@ This pattern is ideal for scenarios like grading systems where scores map to let
 Each condition is checked in order, making it easy to handle multiple thresholds.
 The final else clause handles any values not caught by previous conditions.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
 public class GradingCalculator {
     public static String calculateGrade(Decimal score) {
         String grade;
@@ -1324,7 +1322,9 @@ public class GradingCalculator {
 // Usage example (run in Execute Anonymous):
 // String result = GradingCalculator.calculateGrade(85);
 // System.debug('Grade: ' + result); // Output: Grade: B
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 The method checks score ranges from highest to lowest, assigning the appropriate letter grade.
 This structure ensures only one grade is assigned per score, making the logic clear and maintainable.
@@ -1336,7 +1336,7 @@ This pattern is perfect for validation scenarios where you need to verify multip
 Each nested level adds another layer of validation, ensuring all criteria are satisfied.
 This approach provides fine-grained control over complex validation logic.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class SignUpValidator {
     public static String validateSignUp(String username, String email, Integer age) {
         String errorMessage = '';
@@ -1368,7 +1368,9 @@ public class SignUpValidator {
 // System.debug(result1); // Output: Valid sign-up
 // String result2 = SignUpValidator.validateSignUp('joe', 'joe@example.com', 20);
 // System.debug(result2); // Output: Username must be at least 5 characters
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Each nested if statement checks a specific validation rule, building a comprehensive validation chain.
 Only when all outer conditions pass does the inner validation execute, ensuring all requirements are met.
@@ -1380,7 +1382,7 @@ They're more readable than long if/else chains when dealing with specific enumer
 Each case represents a possible value, with a default case handling unexpected values.
 This pattern is ideal for role-based access control or day-of-week logic.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DayOfWeekHandler {
     public static String getDayType(String day) {
         String dayType;
@@ -1423,7 +1425,9 @@ public class UserRoleHandler {
 // Usage examples (run in Execute Anonymous):
 // System.debug(DayOfWeekHandler.getDayType('Monday')); // Output: Weekday
 // System.debug(UserRoleHandler.getAccessLevel('Admin')); // Output: Full Access
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Switch statements use pattern matching to execute code based on the input value.
 Multiple values can be grouped in a single when clause, and the when else clause handles all other cases.
@@ -1435,7 +1439,7 @@ The when else clause serves as the default case, handling any values not explici
 You can use multiple when clauses to handle different values with the same logic.
 This provides flexibility in handling various scenarios with shared behavior.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class StatusHandler {
     public static String processStatus(String status) {
         String action;
@@ -1463,7 +1467,9 @@ public class StatusHandler {
 // Usage example (run in Execute Anonymous):
 // System.debug(StatusHandler.processStatus('Pending')); // Output: Queue for review
 // System.debug(StatusHandler.processStatus('Invalid')); // Output: Unknown status - manual review required
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Multiple values in a single when clause share the same logic, similar to fall-through behavior.
 The when else clause ensures all possible values are handled, preventing unexpected behavior.
@@ -1471,11 +1477,15 @@ The when else clause ensures all possible values are handled, preventing unexpec
 Using ternary operator for compact decisions (e.g., even/odd)
 
 The ternary operator provides a concise way to make simple conditional assignments in a single line.
-It follows the pattern: condition ? valueIfTrue : valueIfFalse.
-This is ideal for simple decisions where a full if/else block would be verbose.
+
+## It follows the pattern: condition ? valueIfTrue : valueIfFalse.
+
+
+## This is ideal for simple decisions where a full if/else block would be verbose.
+
 It improves code readability for straightforward conditional logic.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class TernaryExamples {
     public static String checkEvenOdd(Integer number) {
         return (Math.mod(number, 2) == 0) ? 'Even' : 'Odd';
@@ -1494,7 +1504,9 @@ public class TernaryExamples {
 // System.debug(TernaryExamples.checkEvenOdd(7)); // Output: Odd
 // System.debug(TernaryExamples.getStatus(true)); // Output: Active
 // System.debug(TernaryExamples.calculateDiscount(100, true)); // Output: 90.0
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 The ternary operator evaluates the condition and returns one of two values based on the result.
 It's more compact than if/else for simple assignments, but should be used judiciously to maintain readability.
@@ -1505,10 +1517,12 @@ Simple for loop iteration (sum of first n numbers)
 
 A simple for loop iterates a fixed number of times, executing code on each iteration.
 It's perfect for calculations that require sequential processing, like summing numbers.
-The loop variable increments automatically, controlling the iteration count.
+
+## The loop variable increments automatically, controlling the iteration count.
+
 This pattern is fundamental for many algorithms and data processing tasks.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class LoopExamples {
     public static Integer sumFirstN(Integer n) {
         Integer sum = 0;
@@ -1530,7 +1544,9 @@ public class LoopExamples {
 // Usage example (run in Execute Anonymous):
 // System.debug(LoopExamples.sumFirstN(10)); // Output: 55 (sum of 1 to 10)
 // System.debug(LoopExamples.factorial(5)); // Output: 120 (5!)
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 The for loop initializes a counter, checks a condition, and increments the counter each iteration.
 This structure is ideal for operations that need to repeat a known number of times.
@@ -1538,11 +1554,13 @@ This structure is ideal for operations that need to repeat a known number of tim
 Enhanced for loop over arrays or collections
 
 Enhanced for loops (for-each) iterate over collections without needing an index variable.
-They automatically handle iteration through lists, sets, and maps.
+
+## They automatically handle iteration through lists, sets, and maps.
+
 This syntax is cleaner and less error-prone than traditional for loops with indices.
 It's the preferred method for iterating through collections in Apex.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class EnhancedLoopExamples {
     public static Integer sumList(List<Integer> numbers) {
         Integer sum = 0;
@@ -1572,19 +1590,23 @@ public class EnhancedLoopExamples {
 // System.debug(EnhancedLoopExamples.sumList(nums)); // Output: 15
 // List<String> words = new List<String>{'hello', 'world'};
 // System.debug(EnhancedLoopExamples.processStrings(words)); // Output: (HELLO, WORLD)
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Enhanced for loops automatically iterate through each element in the collection.
 They eliminate the need for index management and reduce the chance of index-related errors.
 
 While loop: user input simulation (e.g., guessing game)
 
-While loops continue executing as long as a condition remains true.
+
+## While loops continue executing as long as a condition remains true.
+
 They're ideal for scenarios where the number of iterations is unknown beforehand.
 This pattern is useful for simulations, input validation, or processing until a condition is met.
 The loop condition is checked before each iteration.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class GuessingGame {
     private static Integer secretNumber = 42;
     
@@ -1619,19 +1641,25 @@ public class GuessingGame {
 
 // Usage example (run in Execute Anonymous):
 // GuessingGame.simulateGame();
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 While loops continue until the condition becomes false or a break statement is encountered.
 They're perfect for scenarios where iteration count depends on runtime conditions.
 
 Do-while loop for at-least-once execution (e.g., continue until a valid email)
 
-Do-while loops guarantee at least one execution before checking the condition.
+
+## Do-while loops guarantee at least one execution before checking the condition.
+
 The condition is evaluated after each iteration, ensuring the loop body runs at least once.
-This is ideal for input validation where you need to prompt at least once.
+
+## This is ideal for input validation where you need to prompt at least once.
+
 Apex doesn't have a native do-while, but you can simulate it with a while loop and a flag.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class EmailValidator {
     public static Boolean isValidEmail(String email) {
         return email != null && email.contains('@') && email.contains('.');
@@ -1661,7 +1689,9 @@ public class EmailValidator {
 
 // Usage example (run in Execute Anonymous):
 // System.debug(EmailValidator.validateEmailInput());
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 The pattern ensures the validation logic runs at least once before checking if it should continue.
 This is essential for scenarios requiring initial execution regardless of the condition state.
@@ -1670,10 +1700,12 @@ Nested loops: matrix multiplication
 
 Nested loops place one loop inside another, allowing you to work with multi-dimensional data structures.
 They're essential for operations like matrix multiplication, where you need to iterate through rows and columns.
-The outer loop controls one dimension while the inner loop handles another.
+
+## The outer loop controls one dimension while the inner loop handles another.
+
 This pattern enables complex data processing and algorithmic operations.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class MatrixOperations {
     public static List<List<Integer>> multiplyMatrices(
         List<List<Integer>> matrixA, 
@@ -1719,19 +1751,26 @@ public class MatrixOperations {
 //     new List<Integer>{7, 8}
 // };
 // System.debug(MatrixOperations.multiplyMatrices(A, B));
-// AI Generated Code by Deloitte + Cursor (END)
 
-Nested loops enable processing of multi-dimensional data structures.
+```
+
+
+## Nested loops enable processing of multi-dimensional data structures.
+
 The innermost loop performs the core calculation, while outer loops control the traversal pattern.
 
 Breaking out of a loop with break under specific condition
 
-The break statement immediately exits a loop when a specific condition is met.
+
+## The break statement immediately exits a loop when a specific condition is met.
+
 It's useful for stopping iteration once a target is found or a condition is satisfied.
-This prevents unnecessary iterations and improves efficiency.
+
+## This prevents unnecessary iterations and improves efficiency.
+
 Break only exits the innermost loop when used in nested structures.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class BreakExamples {
     public static Integer findFirstEven(List<Integer> numbers) {
         for (Integer num : numbers) {
@@ -1768,7 +1807,9 @@ public class BreakExamples {
 // List<Integer> nums = new List<Integer>{1, 3, 5, 8, 9};
 // System.debug(BreakExamples.findFirstEven(nums)); // Output: 8
 // BreakExamples.processUntilLimit(nums, 6); // Processes only 1, 3, 5
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Break statements provide early exit from loops when further iteration is unnecessary.
 They improve performance by avoiding processing of remaining elements once a condition is met.
@@ -1776,11 +1817,13 @@ They improve performance by avoiding processing of remaining elements once a con
 Using continue to skip elements (e.g., skip negative numbers in array)
 
 The continue statement skips the current iteration and proceeds to the next one.
-It's useful for filtering out unwanted elements during iteration.
+
+## It's useful for filtering out unwanted elements during iteration.
+
 This allows you to process only specific items without exiting the loop entirely.
 Continue is ideal for conditional processing within loops.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class ContinueExamples {
     public static List<Integer> filterPositives(List<Integer> numbers) {
         List<Integer> positives = new List<Integer>();
@@ -1818,7 +1861,9 @@ public class ContinueExamples {
 // List<Integer> nums = new List<Integer>{-2, 1, -3, 4, 5, -6};
 // System.debug(ContinueExamples.filterPositives(nums)); // Output: (1, 4, 5)
 // System.debug(ContinueExamples.sumEvenNumbers(nums)); // Output: 4 (only 4, -6 is negative so skipped)
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Continue skips the current iteration's remaining code and moves to the next iteration.
 It's perfect for filtering operations where you want to exclude certain elements from processing.
@@ -1827,10 +1872,12 @@ Reversing an array via looping
 
 Reversing an array requires swapping elements from opposite ends until the middle is reached.
 You can use a traditional for loop with indices to access elements from both ends.
-The loop continues until the start and end indices meet or cross.
+
+## The loop continues until the start and end indices meet or cross.
+
 This is a fundamental array manipulation technique.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class ArrayReversal {
     public static List<Integer> reverseList(List<Integer> original) {
         List<Integer> reversed = new List<Integer>();
@@ -1858,19 +1905,25 @@ public class ArrayReversal {
 // System.debug(ArrayReversal.reverseList(nums)); // Output: (5, 4, 3, 2, 1)
 // ArrayReversal.reverseInPlace(nums);
 // System.debug(nums); // Output: (5, 4, 3, 2, 1)
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Reversing can be done by creating a new list in reverse order or by swapping elements in place.
 The in-place method is more memory-efficient but modifies the original list.
 
 Iterating backwards through a list
 
-Iterating backwards accesses list elements from the last index to the first.
+
+## Iterating backwards accesses list elements from the last index to the first.
+
 This is useful when you need to process elements in reverse order or when removing elements during iteration.
-The loop starts at the last index (size - 1) and decrements to 0.
+
+## The loop starts at the last index (size - 1) and decrements to 0.
+
 This pattern is essential for certain algorithms and data processing tasks.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class BackwardIteration {
     public static void printReverse(List<String> items) {
         for (Integer i = items.size() - 1; i >= 0; i--) {
@@ -1901,13 +1954,16 @@ public class BackwardIteration {
 // List<Integer> nums = new List<Integer>{1, 2, 3, 4, 5};
 // BackwardIteration.removeFromEnd(nums, 3);
 // System.debug(nums); // Output: (3, 4, 5)
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Backward iteration is crucial when modifying lists during iteration, as it prevents index shifting issues.
 Starting from the end ensures that removing elements doesn't affect the indices of unprocessed elements.
 
 
-3. Data Handling
+# 3. Data Handling
+
 Arrays and Collections
 
 Initializing and populating an array
@@ -1917,7 +1973,7 @@ You can initialize lists with predefined values or create empty lists and add el
 Lists support various operations like adding, removing, and accessing elements by index.
 They're the primary collection type in Apex for ordered data storage.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class ArrayInitialization {
     public static void demonstrateInitialization() {
         // Method 1: Initialize with values
@@ -1950,19 +2006,26 @@ public class ArrayInitialization {
 
 // Usage example (run in Execute Anonymous):
 // ArrayInitialization.demonstrateInitialization();
-// AI Generated Code by Deloitte + Cursor (END)
 
-Lists in Apex are flexible and support multiple initialization patterns.
+```
+
+
+## Lists in Apex are flexible and support multiple initialization patterns.
+
 Choose the method that best fits your use case and data source.
 
 Finding max/min in an array
 
 Finding maximum and minimum values requires iterating through all elements and comparing them.
-You can use a loop to track the current max/min as you process each element.
-Initialize the max/min with the first element or a sentinel value.
+
+## You can use a loop to track the current max/min as you process each element.
+
+
+## Initialize the max/min with the first element or a sentinel value.
+
 This is a fundamental algorithm for data analysis and validation.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class MinMaxFinder {
     public static Integer findMax(List<Integer> numbers) {
         if (numbers == null || numbers.isEmpty()) {
@@ -2004,19 +2067,25 @@ public class MinMaxFinder {
 // List<Integer> nums = new List<Integer>{5, 2, 8, 1, 9, 3};
 // System.debug('Max: ' + MinMaxFinder.findMax(nums)); // Output: Max: 9
 // System.debug('Min: ' + MinMaxFinder.findMin(nums)); // Output: Min: 1
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 The algorithm compares each element against the current max/min, updating as needed.
 This linear scan approach is efficient and straightforward for finding extremes.
 
 Removing duplicates from a List<Integer>
 
-Removing duplicates ensures each value appears only once in the collection.
+
+## Removing duplicates ensures each value appears only once in the collection.
+
 You can use a Set to automatically handle uniqueness, then convert back to a List.
-Alternatively, iterate through the list and manually track seen values.
+
+## Alternatively, iterate through the list and manually track seen values.
+
 Sets are the most efficient approach for duplicate removal.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DuplicateRemoval {
     public static List<Integer> removeDuplicatesUsingSet(List<Integer> numbers) {
         Set<Integer> uniqueSet = new Set<Integer>(numbers);
@@ -2045,19 +2114,24 @@ public class DuplicateRemoval {
 // Usage example (run in Execute Anonymous):
 // List<Integer> nums = new List<Integer>{1, 2, 2, 3, 3, 3, 4, 5};
 // System.debug(DuplicateRemoval.removeDuplicatesUsingSet(nums)); // Output: (1, 2, 3, 4, 5)
-// AI Generated Code by Deloitte + Cursor (END)
 
-Sets automatically enforce uniqueness, making them ideal for duplicate removal.
+```
+
+
+## Sets automatically enforce uniqueness, making them ideal for duplicate removal.
+
 Converting a Set back to a List preserves the unique values while restoring list functionality.
 
 Sorting a list of custom objects
 
 Sorting custom objects requires implementing the Comparable interface or using a custom comparator.
 The Comparable interface requires a compareTo method that defines the sorting logic.
-Objects can be sorted by any field or combination of fields.
+
+## Objects can be sorted by any field or combination of fields.
+
 This enables flexible data organization based on business requirements.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class Student implements Comparable {
     public String name;
     public Integer age;
@@ -2096,19 +2170,24 @@ public class StudentSorter {
 // for (Student s : students) {
 //     System.debug(s.name + ': ' + s.grade);
 // }
-// AI Generated Code by Deloitte + Cursor (END)
 
-The compareTo method returns -1, 0, or 1 to indicate ordering.
+```
+
+
+## The compareTo method returns -1, 0, or 1 to indicate ordering.
+
 Implementing Comparable allows using the built-in sort() method on collections.
 
 Using Map for key-value lookups (e.g., employeeId to Employee)
 
 Maps provide efficient key-value storage and retrieval, ideal for lookups by unique identifiers.
-They enable O(1) average-case access time for finding values by key.
+
+## They enable O(1) average-case access time for finding values by key.
+
 Maps are perfect for scenarios where you need to quickly find objects by ID or other unique attributes.
 This pattern is fundamental for efficient data access in Apex.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class Employee {
     public String employeeId;
     public String name;
@@ -2144,19 +2223,24 @@ public class EmployeeLookup {
 // Map<String, Employee> empMap = EmployeeLookup.buildEmployeeMap(employees);
 // Employee found = EmployeeLookup.findEmployee(empMap, 'E002');
 // System.debug(found.name); // Output: Bob Jones
-// AI Generated Code by Deloitte + Cursor (END)
 
-Maps provide fast lookup by key, making them ideal for ID-based searches.
+```
+
+
+## Maps provide fast lookup by key, making them ideal for ID-based searches.
+
 They eliminate the need for linear searches through lists when looking up by identifier.
 
 Using Set to ensure unique elements (e.g., collecting unique emails)
 
 Sets automatically enforce uniqueness, preventing duplicate values from being stored.
 They're ideal for collecting unique identifiers, emails, or any distinct values.
-Sets provide fast membership testing with contains() method.
+
+## Sets provide fast membership testing with contains() method.
+
 Converting between Sets and Lists is straightforward in Apex.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class UniqueEmailCollector {
     public static Set<String> collectUniqueEmails(List<String> emailList) {
         Set<String> uniqueEmails = new Set<String>();
@@ -2191,7 +2275,9 @@ public class UniqueEmailCollector {
 // };
 // Set<String> unique = UniqueEmailCollector.collectUniqueEmails(emails);
 // System.debug('Unique emails: ' + unique.size()); // Output: 3 (duplicate removed)
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Sets automatically handle uniqueness, making them perfect for collecting distinct values.
 They're more efficient than manually checking for duplicates in a list.
@@ -2199,11 +2285,13 @@ They're more efficient than manually checking for duplicates in a list.
 Working with List<Set<String>> for groupings
 
 Nested collections like List<Set<String>> allow you to organize data into multiple groups.
-Each Set in the List represents a distinct group with unique elements.
+
+## Each Set in the List represents a distinct group with unique elements.
+
 This structure is useful for categorizing data or creating multiple distinct collections.
 It enables complex data organization patterns.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class GroupingExamples {
     public static List<Set<String>> groupByCategory(Map<String, String> itemCategoryMap) {
         Map<String, Set<String>> categoryGroups = new Map<String, Set<String>>();
@@ -2243,9 +2331,12 @@ public class GroupingExamples {
 // Usage example (run in Execute Anonymous):
 // List<Set<String>> groups = GroupingExamples.createGroups();
 // GroupingExamples.processGroups(groups);
-// AI Generated Code by Deloitte + Cursor (END)
 
-Nested collections enable sophisticated data organization and grouping.
+```
+
+
+## Nested collections enable sophisticated data organization and grouping.
+
 Each Set maintains uniqueness within its group while the List maintains the group structure.
 
 Mapping product names to prices, updating values
@@ -2255,7 +2346,7 @@ You can update map values directly by key, making price changes straightforward.
 Maps provide a natural structure for key-value relationships like product catalogs.
 This pattern is common in e-commerce and inventory management systems.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class ProductPriceManager {
     public static Map<String, Decimal> initializePrices() {
         Map<String, Decimal> prices = new Map<String, Decimal>();
@@ -2288,19 +2379,24 @@ public class ProductPriceManager {
 // ProductPriceManager.updatePrice(prices, 'Laptop', 899.99);
 // ProductPriceManager.applyDiscount(prices, 10); // 10% discount
 // System.debug('Laptop price: $' + prices.get('Laptop'));
-// AI Generated Code by Deloitte + Cursor (END)
 
-Maps allow direct updates by key, making price management efficient.
+```
+
+
+## Maps allow direct updates by key, making price management efficient.
+
 You can update individual prices or apply bulk operations across all products.
 
 Iterating over a map's keys/values
 
-Maps provide multiple ways to iterate: by keys, values, or key-value pairs.
+
+## Maps provide multiple ways to iterate: by keys, values, or key-value pairs.
+
 The keySet() method returns all keys, values() returns all values, and you can access both.
 Iteration order in Apex maps is not guaranteed unless using ordered collections.
 This flexibility enables various data processing patterns.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class MapIteration {
     public static void iterateByKeys(Map<String, Integer> scores) {
         for (String key : scores.keySet()) {
@@ -2338,7 +2434,9 @@ public class MapIteration {
 // };
 // MapIteration.iterateByKeys(scores);
 // System.debug('Total: ' + MapIteration.sumAllValues(scores));
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Different iteration methods serve different purposes: keys for lookups, values for aggregations.
 Choose the iteration method that best fits your processing needs.
@@ -2347,12 +2445,18 @@ Data Cleaning and Transformation
 
 Removing nulls from a list
 
-Null values can cause errors and should be filtered out before processing.
-You can iterate through a list and collect only non-null values.
-Alternatively, use list methods to remove nulls efficiently.
+
+## Null values can cause errors and should be filtered out before processing.
+
+
+## You can iterate through a list and collect only non-null values.
+
+
+## Alternatively, use list methods to remove nulls efficiently.
+
 This is essential for data quality and preventing NullPointerException errors.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class NullRemoval {
     public static List<String> removeNulls(List<String> items) {
         List<String> cleaned = new List<String>();
@@ -2388,19 +2492,28 @@ public class NullRemoval {
 // Usage example (run in Execute Anonymous):
 // List<String> data = new List<String>{'apple', null, 'banana', null, 'cherry'};
 // System.debug(NullRemoval.removeNulls(data)); // Output: (apple, banana, cherry)
-// AI Generated Code by Deloitte + Cursor (END)
 
-Removing nulls prevents errors and ensures data integrity.
+```
+
+
+## Removing nulls prevents errors and ensures data integrity.
+
 Always check for null before processing to avoid runtime exceptions.
 
 Standardizing string case across a list (e.g., making all uppercase)
 
-Standardizing case ensures consistent data formatting across a collection.
-You can use toUpperCase() or toLowerCase() methods to transform strings.
-This is important for comparisons, searches, and data consistency.
+
+## Standardizing case ensures consistent data formatting across a collection.
+
+
+## You can use toUpperCase() or toLowerCase() methods to transform strings.
+
+
+## This is important for comparisons, searches, and data consistency.
+
 Case standardization is a common data cleaning operation.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class CaseStandardization {
     public static List<String> toUpperCase(List<String> items) {
         List<String> upper = new List<String>();
@@ -2439,19 +2552,28 @@ public class CaseStandardization {
 // List<String> names = new List<String>{'alice', 'BOB', 'Charlie'};
 // System.debug(CaseStandardization.toUpperCase(names)); // Output: (ALICE, BOB, CHARLIE)
 // System.debug(CaseStandardization.capitalizeFirst(names)); // Output: (Alice, Bob, Charlie)
-// AI Generated Code by Deloitte + Cursor (END)
 
-Case standardization ensures consistent formatting for comparisons and display.
+```
+
+
+## Case standardization ensures consistent formatting for comparisons and display.
+
 Choose the case format that matches your business requirements.
 
 Filtering items based on conditions (e.g., extracting valid emails)
 
-Filtering extracts elements that meet specific criteria from a collection.
-You iterate through the collection and add items that pass the condition.
-This is fundamental for data validation and extraction.
+
+## Filtering extracts elements that meet specific criteria from a collection.
+
+
+## You iterate through the collection and add items that pass the condition.
+
+
+## This is fundamental for data validation and extraction.
+
 Filtering enables focused processing of relevant data.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DataFiltering {
     public static List<String> extractValidEmails(List<String> emails) {
         List<String> valid = new List<String>();
@@ -2491,19 +2613,28 @@ public class DataFiltering {
 //     'another@test.com'
 // };
 // System.debug(DataFiltering.extractValidEmails(emails)); // Output: (valid@example.com, another@test.com)
-// AI Generated Code by Deloitte + Cursor (END)
 
-Filtering extracts only elements that meet your criteria.
+```
+
+
+## Filtering extracts only elements that meet your criteria.
+
 This reduces data volume and focuses processing on relevant items.
 
 Parsing a comma-separated string into a list
 
-Parsing splits a delimited string into individual elements stored in a list.
-The split() method divides a string based on a delimiter character.
-This is essential for processing CSV data or user input.
+
+## Parsing splits a delimited string into individual elements stored in a list.
+
+
+## The split() method divides a string based on a delimiter character.
+
+
+## This is essential for processing CSV data or user input.
+
 Parsing enables conversion from string format to structured collections.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class StringParsing {
     public static List<String> parseCommaSeparated(String csvString) {
         if (csvString == null || csvString.trim().length() == 0) {
@@ -2544,19 +2675,26 @@ public class StringParsing {
 // System.debug(StringParsing.parseWithTrim(csv)); // Output: (apple, banana, cherry, date)
 // String numbers = '1, 2, 3, 4, 5';
 // System.debug(StringParsing.parseIntegers(numbers)); // Output: (1, 2, 3, 4, 5)
-// AI Generated Code by Deloitte + Cursor (END)
 
-The split() method divides strings based on delimiters.
+```
+
+
+## The split() method divides strings based on delimiters.
+
 Always handle null strings and trim whitespace for clean parsing.
 
 Joining a list back into a single string
 
-Joining combines list elements into a single string with a delimiter.
+
+## Joining combines list elements into a single string with a delimiter.
+
 Apex provides the String.join() method for this purpose.
-You can also manually concatenate with custom delimiters.
+
+## You can also manually concatenate with custom delimiters.
+
 Joining is the inverse operation of parsing.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class StringJoining {
     public static String joinWithComma(List<String> items) {
         return String.join(items, ', ');
@@ -2586,19 +2724,25 @@ public class StringJoining {
 // List<String> fruits = new List<String>{'apple', 'banana', 'cherry'};
 // System.debug(StringJoining.joinWithComma(fruits)); // Output: apple, banana, cherry
 // System.debug(StringJoining.joinNumbers(new List<Integer>{1, 2, 3}, '|')); // Output: 1|2|3
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 String.join() provides efficient concatenation with delimiters.
 Manual joining gives more control over formatting and edge cases.
 
 Replacing or updating records in a collection
 
-Updating records in a collection requires finding the target and modifying it.
+
+## Updating records in a collection requires finding the target and modifying it.
+
 You can iterate and update in place, or create a new collection with modifications.
-Maps allow direct updates by key, while lists require iteration.
+
+## Maps allow direct updates by key, while lists require iteration.
+
 This enables data transformation and correction operations.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class CollectionUpdates {
     public static List<String> replaceInList(List<String> items, String oldValue, String newValue) {
         List<String> updated = new List<String>();
@@ -2632,7 +2776,9 @@ public class CollectionUpdates {
 // List<String> items = new List<String>{'apple', 'banana', 'apple'};
 // CollectionUpdates.updateInPlace(items, 'apple', 'orange');
 // System.debug(items); // Output: (orange, banana, orange)
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 In-place updates modify the original collection, while creating new collections preserves originals.
 Choose the approach based on whether you need to preserve the original data.
@@ -2644,7 +2790,7 @@ Lists maintain order and allow duplicates; Sets enforce uniqueness but don't gua
 Conversions are straightforward using constructors that accept the other collection type.
 This enables switching between ordered and unique collection behaviors.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class CollectionConversion {
     public static Set<String> listToSet(List<String> items) {
         return new Set<String>(items);
@@ -2671,7 +2817,9 @@ public class CollectionConversion {
 // System.debug(unique); // Output: {a, b, c} (duplicates removed)
 // List<String> backToList = CollectionConversion.setToList(unique);
 // System.debug(backToList);
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Conversions automatically handle uniqueness: List to Set removes duplicates, Set to List preserves unique values.
 Use conversions when you need to switch between ordered and unique collection behaviors.
@@ -2679,11 +2827,15 @@ Use conversions when you need to switch between ordered and unique collection be
 Aggregating quantities by category (custom tallying)
 
 Aggregation groups data by category and calculates totals, counts, or other metrics.
-You can use Maps to track totals per category efficiently.
-This pattern is essential for reporting and data analysis.
+
+## You can use Maps to track totals per category efficiently.
+
+
+## This pattern is essential for reporting and data analysis.
+
 Aggregation enables summary statistics from detailed data.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class Product {
     public String name;
     public String category;
@@ -2732,19 +2884,28 @@ public class AggregationExamples {
 // };
 // Map<String, Integer> totals = AggregationExamples.aggregateByCategory(products);
 // System.debug(totals); // Output: {Electronics=15, Furniture=3}
-// AI Generated Code by Deloitte + Cursor (END)
 
-Maps efficiently track aggregations by category using keys.
+```
+
+
+## Maps efficiently track aggregations by category using keys.
+
 This pattern scales well for large datasets and multiple categories.
 
 Aligning two lists by value (merge join)
 
-Merging aligns two lists based on matching values, combining related data.
-You can use nested loops or Maps for efficient merging.
-Maps provide O(1) lookup, making them ideal for large datasets.
+
+## Merging aligns two lists based on matching values, combining related data.
+
+
+## You can use nested loops or Maps for efficient merging.
+
+
+## Maps provide O(1) lookup, making them ideal for large datasets.
+
 This pattern is fundamental for data integration and joins.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class MergeJoin {
     public static List<String> mergeByValue(List<String> list1, List<String> list2) {
         List<String> merged = new List<String>();
@@ -2788,19 +2949,28 @@ public class MergeJoin {
 // List<String> list1 = new List<String>{'a', 'b', 'c'};
 // List<String> list2 = new List<String>{'b', 'c', 'd'};
 // System.debug(MergeJoin.mergeByValue(list1, list2)); // Output: (a, b, c, d)
-// AI Generated Code by Deloitte + Cursor (END)
 
-Merging combines data from multiple sources based on matching criteria.
+```
+
+
+## Merging combines data from multiple sources based on matching criteria.
+
 Use Maps for efficient lookups when aligning large datasets.
 
 Detecting palindrome strings in a list
 
-Palindromes read the same forwards and backwards, like "radar" or "level".
-You can check by comparing characters from both ends moving toward the center.
-This is a common string manipulation and validation task.
+
+## Palindromes read the same forwards and backwards, like "radar" or "level".
+
+
+## You can check by comparing characters from both ends moving toward the center.
+
+
+## This is a common string manipulation and validation task.
+
 Detecting palindromes demonstrates reverse string comparison techniques.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class PalindromeDetection {
     public static Boolean isPalindrome(String str) {
         if (str == null || str.length() == 0) {
@@ -2845,13 +3015,17 @@ public class PalindromeDetection {
 // Usage example (run in Execute Anonymous):
 // List<String> words = new List<String>{'radar', 'hello', 'level', 'world'};
 // System.debug(PalindromeDetection.findPalindromes(words)); // Output: (radar, level)
-// AI Generated Code by Deloitte + Cursor (END)
 
-Palindrome detection compares characters from both ends or reverses the string.
+```
+
+
+## Palindrome detection compares characters from both ends or reverses the string.
+
 Normalize input (lowercase, remove spaces) for accurate detection.
 
 
-4. Object Creation and Record Management
+# 4. Object Creation and Record Management
+
 Object Instantiation
 
 Basic SObject creation (e.g., Account a = new Account(Name='Test');)
@@ -2861,7 +3035,7 @@ You can set fields during creation using the constructor-like syntax with field 
 This is the fundamental way to create new records before inserting them into the database.
 SObject creation is the first step in the DML operation workflow.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class SObjectCreation {
     public static Account createBasicAccount() {
         Account acc = new Account();
@@ -2887,19 +3061,26 @@ public class SObjectCreation {
 // Usage example (run in Execute Anonymous):
 // Account acc = SObjectCreation.createAccountInline();
 // System.debug('Account Name: ' + acc.Name);
-// AI Generated Code by Deloitte + Cursor (END)
 
-SObject creation initializes a record in memory before database insertion.
+```
+
+
+## SObject creation initializes a record in memory before database insertion.
+
 You can set fields during creation or assign them afterward.
 
 Parameterized initialization of multiple fields
 
 Parameterized initialization sets multiple fields during SObject creation in a single statement.
-This approach is cleaner and more concise than setting fields individually.
-It's ideal when you have all field values available at creation time.
+
+## This approach is cleaner and more concise than setting fields individually.
+
+
+## It's ideal when you have all field values available at creation time.
+
 This pattern improves code readability and reduces lines of code.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class ParameterizedSObjectCreation {
     public static Account createFullAccount(String name, String industry, String phone) {
         Account acc = new Account(
@@ -2928,19 +3109,26 @@ public class ParameterizedSObjectCreation {
 //     'Acme Corp', 'Technology', '555-1234'
 // );
 // System.debug('Created: ' + acc.Name + ' in ' + acc.Industry);
-// AI Generated Code by Deloitte + Cursor (END)
 
-Parameterized initialization sets multiple fields in one statement.
+```
+
+
+## Parameterized initialization sets multiple fields in one statement.
+
 This approach is efficient and makes field assignments clear and organized.
 
 Populating a list with several SObjects
 
 Populating lists with multiple SObjects enables bulk operations and efficient data handling.
-You can create SObjects in a loop or initialize the list with multiple objects.
-Lists of SObjects are required for bulk DML operations.
+
+## You can create SObjects in a loop or initialize the list with multiple objects.
+
+
+## Lists of SObjects are required for bulk DML operations.
+
 This pattern is essential for processing multiple records efficiently.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class BulkSObjectCreation {
     public static List<Account> createMultipleAccounts() {
         List<Account> accounts = new List<Account>();
@@ -2981,19 +3169,24 @@ public class BulkSObjectCreation {
 // Usage example (run in Execute Anonymous):
 // List<Account> accounts = BulkSObjectCreation.createMultipleAccounts();
 // System.debug('Created ' + accounts.size() + ' accounts');
-// AI Generated Code by Deloitte + Cursor (END)
 
-Lists enable bulk creation and processing of multiple SObjects.
+```
+
+
+## Lists enable bulk creation and processing of multiple SObjects.
+
 This pattern is essential for efficient bulk DML operations in Apex.
 
 Cloning/copying records programmatically
 
 Cloning creates copies of existing SObjects, useful for duplicating records or creating templates.
-Apex provides the clone() method for SObjects, which creates a shallow copy.
+
+## Apex provides the clone() method for SObjects, which creates a shallow copy.
+
 You can clone with or without IDs, depending on whether you want to create new records.
 Cloning is efficient for creating similar records with modifications.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class SObjectCloning {
     public static Account cloneAccount(Account original) {
         // Clone without ID to create a new record
@@ -3027,19 +3220,25 @@ public class SObjectCloning {
 // Account original = new Account(Name = 'Original Account');
 // Account copy = SObjectCloning.cloneAccount(original);
 // System.debug('Cloned: ' + copy.Name);
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 The clone() method parameters control what gets copied: preserveId, isDeepClone, preserveReadonlyTimestamps, preserveAutonumber.
 Use cloning to efficiently create similar records with modifications.
 
 Bulk creation using for loop
 
-Bulk creation uses loops to generate multiple SObjects efficiently.
+
+## Bulk creation uses loops to generate multiple SObjects efficiently.
+
 This pattern is essential when creating records based on data sources or calculations.
-Loops enable dynamic record creation based on runtime conditions.
+
+## Loops enable dynamic record creation based on runtime conditions.
+
 Bulk creation is the foundation of efficient data processing in Apex.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class BulkCreationWithLoop {
     public static List<Account> createAccountsFromNames(List<String> accountNames) {
         List<Account> accounts = new List<Account>();
@@ -3090,21 +3289,30 @@ public class BulkCreationWithLoop {
 // List<String> names = new List<String>{'Acme', 'Beta', 'Gamma'};
 // List<Account> accounts = BulkCreationWithLoop.createAccountsFromNames(names);
 // System.debug('Created ' + accounts.size() + ' accounts');
-// AI Generated Code by Deloitte + Cursor (END)
 
-Loops enable efficient bulk creation from various data sources.
+```
+
+
+## Loops enable efficient bulk creation from various data sources.
+
 This pattern scales well for creating large numbers of records.
 
 SOQL Queries
 
 Query with WHERE clause for single-criteria filtering
 
-WHERE clauses filter SOQL query results based on specified conditions.
-Single-criteria filtering uses one condition to narrow results.
-This is the most common query pattern for finding specific records.
+
+## WHERE clauses filter SOQL query results based on specified conditions.
+
+
+## Single-criteria filtering uses one condition to narrow results.
+
+
+## This is the most common query pattern for finding specific records.
+
 WHERE clauses make queries efficient by limiting the result set.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class SOQLFiltering {
     public static List<Account> getAccountsByIndustry(String industry) {
         return [SELECT Id, Name, Industry FROM Account WHERE Industry = :industry];
@@ -3127,19 +3335,26 @@ public class SOQLFiltering {
 // Usage example (run in Execute Anonymous):
 // List<Account> techAccounts = SOQLFiltering.getAccountsByIndustry('Technology');
 // System.debug('Found ' + techAccounts.size() + ' technology accounts');
-// AI Generated Code by Deloitte + Cursor (END)
 
-WHERE clauses use bind variables (:variable) for safe parameterized queries.
+```
+
+
+## WHERE clauses use bind variables (:variable) for safe parameterized queries.
+
 Always use bind variables to prevent SOQL injection and improve performance.
 
 ORDER BY ascending/descending on a field
 
 ORDER BY sorts query results in ascending or descending order based on specified fields.
-ASC sorts from lowest to highest, DESC from highest to lowest.
-You can sort by multiple fields for complex ordering requirements.
+
+## ASC sorts from lowest to highest, DESC from highest to lowest.
+
+
+## You can sort by multiple fields for complex ordering requirements.
+
 Sorting is essential for presenting data in meaningful sequences.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class SOQLSorting {
     public static List<Account> getAccountsSortedByName() {
         return [SELECT Id, Name, Industry FROM Account ORDER BY Name ASC];
@@ -3166,19 +3381,28 @@ public class SOQLSorting {
 // for (Account acc : sorted) {
 //     System.debug(acc.Name);
 // }
-// AI Generated Code by Deloitte + Cursor (END)
 
-ORDER BY enables predictable result ordering for display and processing.
+```
+
+
+## ORDER BY enables predictable result ordering for display and processing.
+
 Multiple fields in ORDER BY create hierarchical sorting (primary, secondary, etc.).
 
 Limiting results with LIMIT
 
-LIMIT restricts the number of records returned by a SOQL query.
-This is essential for performance and preventing governor limit issues.
-LIMIT is particularly important for queries that might return many records.
+
+## LIMIT restricts the number of records returned by a SOQL query.
+
+
+## This is essential for performance and preventing governor limit issues.
+
+
+## LIMIT is particularly important for queries that might return many records.
+
 Always use LIMIT when you only need a subset of results.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class SOQLLimiting {
     public static List<Account> getTopAccounts(Integer limitCount) {
         return [SELECT Id, Name, AnnualRevenue FROM Account 
@@ -3204,19 +3428,28 @@ public class SOQLLimiting {
 // Usage example (run in Execute Anonymous):
 // List<Account> top5 = SOQLLimiting.getTopAccounts(5);
 // System.debug('Top 5 accounts: ' + top5.size());
-// AI Generated Code by Deloitte + Cursor (END)
 
-LIMIT prevents excessive data retrieval and improves query performance.
+```
+
+
+## LIMIT prevents excessive data retrieval and improves query performance.
+
 Combine LIMIT with ORDER BY to get the most relevant records.
 
 Combining multiple criteria in WHERE
 
-Multiple WHERE criteria use AND/OR operators to create complex filters.
-AND requires all conditions to be true; OR requires at least one to be true.
-Parentheses group conditions for complex logic.
+
+## Multiple WHERE criteria use AND/OR operators to create complex filters.
+
+
+## AND requires all conditions to be true; OR requires at least one to be true.
+
+
+## Parentheses group conditions for complex logic.
+
 This enables sophisticated data filtering for business requirements.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class ComplexSOQLFilters {
     public static List<Account> getAccountsByIndustryAndRevenue(String industry, Decimal minRevenue) {
         return [SELECT Id, Name, Industry, AnnualRevenue FROM Account 
@@ -3243,19 +3476,26 @@ public class ComplexSOQLFilters {
 // Usage example (run in Execute Anonymous):
 // List<Account> filtered = ComplexSOQLFilters.getAccountsByIndustryAndRevenue('Technology', 1000000);
 // System.debug('Found ' + filtered.size() + ' matching accounts');
-// AI Generated Code by Deloitte + Cursor (END)
 
-Complex WHERE clauses enable precise data filtering.
+```
+
+
+## Complex WHERE clauses enable precise data filtering.
+
 Use parentheses to control operator precedence and create clear logic.
 
 Aggregate SOQL: COUNT(), SUM(), etc.
 
 Aggregate functions perform calculations across multiple records in SOQL queries.
-Common functions include COUNT(), SUM(), AVG(), MAX(), MIN().
-Aggregate queries return AggregateResult objects instead of SObjects.
+
+## Common functions include COUNT(), SUM(), AVG(), MAX(), MIN().
+
+
+## Aggregate queries return AggregateResult objects instead of SObjects.
+
 This enables efficient data analysis without processing individual records.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class AggregateSOQL {
     public static Integer getAccountCount() {
         AggregateResult result = [SELECT COUNT() total FROM Account];
@@ -3293,19 +3533,28 @@ public class AggregateSOQL {
 // System.debug('Total accounts: ' + AggregateSOQL.getAccountCount());
 // Map<String, Integer> counts = AggregateSOQL.getAccountCountByIndustry();
 // System.debug('Accounts by industry: ' + counts);
-// AI Generated Code by Deloitte + Cursor (END)
 
-Aggregate queries return AggregateResult objects accessed via get() method.
+```
+
+
+## Aggregate queries return AggregateResult objects accessed via get() method.
+
 GROUP BY enables aggregation by categories, providing summary statistics.
 
 Using IN clause for batch queries
 
-IN clauses allow filtering by multiple values in a single query.
-This is more efficient than multiple queries or complex OR conditions.
-IN works with lists, sets, or subqueries.
+
+## IN clauses allow filtering by multiple values in a single query.
+
+
+## This is more efficient than multiple queries or complex OR conditions.
+
+
+## IN works with lists, sets, or subqueries.
+
 This pattern is essential for batch processing and bulk operations.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class INClauseQueries {
     public static List<Account> getAccountsByIds(List<Id> accountIds) {
         return [SELECT Id, Name FROM Account WHERE Id IN :accountIds];
@@ -3331,19 +3580,26 @@ public class INClauseQueries {
 // List<Id> ids = new List<Id>{'001xx000003DGbQAAW', '001xx000003DGbRAAW'};
 // List<Account> accounts = INClauseQueries.getAccountsByIds(ids);
 // System.debug('Found ' + accounts.size() + ' accounts');
-// AI Generated Code by Deloitte + Cursor (END)
 
-IN clauses efficiently filter by multiple values in a single query.
+```
+
+
+## IN clauses efficiently filter by multiple values in a single query.
+
 They're ideal for batch operations and reduce the number of queries needed.
 
 Subquery for related data (parent-child)
 
 Subqueries retrieve related records in a single query, accessing child or parent relationships.
-Parent-child relationships use relationship names in SOQL syntax.
-This eliminates the need for multiple queries and improves performance.
+
+## Parent-child relationships use relationship names in SOQL syntax.
+
+
+## This eliminates the need for multiple queries and improves performance.
+
 Subqueries enable efficient access to related data hierarchies.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class SubqueryExamples {
     public static List<Account> getAccountsWithContacts() {
         return [SELECT Id, Name, 
@@ -3376,7 +3632,9 @@ public class SubqueryExamples {
 // for (Account acc : accounts) {
 //     System.debug(acc.Name + ' has ' + acc.Contacts.size() + ' contacts');
 // }
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Subqueries access related records using relationship names (Contacts, Opportunities).
 Parent fields are accessed via dot notation (Account.Name).
@@ -3384,12 +3642,18 @@ This enables efficient retrieval of hierarchical data in one query.
 
 Dynamic SOQL: constructing queries programmatically
 
-Dynamic SOQL builds queries at runtime using string concatenation.
-This enables flexible query construction based on runtime conditions.
-Use bind variables with dynamic SOQL for security and performance.
+
+## Dynamic SOQL builds queries at runtime using string concatenation.
+
+
+## This enables flexible query construction based on runtime conditions.
+
+
+## Use bind variables with dynamic SOQL for security and performance.
+
 Dynamic SOQL is powerful but requires careful construction to avoid errors.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DynamicSOQL {
     public static List<Account> buildDynamicQuery(String industry, Decimal minRevenue) {
         String query = 'SELECT Id, Name, Industry, AnnualRevenue FROM Account WHERE 1=1';
@@ -3426,7 +3690,9 @@ public class DynamicSOQL {
 // Usage example (run in Execute Anonymous):
 // List<Account> results = DynamicSOQL.buildDynamicQuery('Technology', 1000000);
 // System.debug('Found ' + results.size() + ' accounts');
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Dynamic SOQL uses Database.query() to execute string-based queries.
 Always escape user input with String.escapeSingleQuotes() to prevent SOQL injection.
@@ -3435,11 +3701,15 @@ Use bind variables where possible for better security and performance.
 Querying based on relative dates (e.g., LAST_N_DAYS:30)
 
 Relative date literals provide convenient date filtering without calculating exact dates.
-Common literals include TODAY, YESTERDAY, LAST_N_DAYS, NEXT_N_DAYS, etc.
-These simplify date-based queries and make them more readable.
+
+## Common literals include TODAY, YESTERDAY, LAST_N_DAYS, NEXT_N_DAYS, etc.
+
+
+## These simplify date-based queries and make them more readable.
+
 Relative dates automatically adjust, making queries time-aware.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class RelativeDateQueries {
     public static List<Account> getAccountsCreatedLast30Days() {
         return [SELECT Id, Name, CreatedDate FROM Account 
@@ -3470,19 +3740,27 @@ public class RelativeDateQueries {
 // Usage example (run in Execute Anonymous):
 // List<Account> recent = RelativeDateQueries.getAccountsCreatedLast30Days();
 // System.debug('Accounts created in last 30 days: ' + recent.size());
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Relative date literals simplify date-based filtering without manual date calculations.
 They make queries more readable and automatically adjust based on the current date.
 
 Querying and processing picklist fields
 
-Picklist fields contain predefined values that can be queried and processed.
-You can filter by picklist values and iterate through available values.
-Picklist values are case-sensitive in queries.
+
+## Picklist fields contain predefined values that can be queried and processed.
+
+
+## You can filter by picklist values and iterate through available values.
+
+
+## Picklist values are case-sensitive in queries.
+
 Processing picklists requires understanding their structure and valid values.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class PicklistQueries {
     public static List<Account> getAccountsByIndustry(String industry) {
         return [SELECT Id, Name, Industry FROM Account WHERE Industry = :industry];
@@ -3517,22 +3795,33 @@ public class PicklistQueries {
 // List<Account> techAccounts = PicklistQueries.getAccountsByIndustry('Technology');
 // Map<String, Integer> industryCounts = PicklistQueries.countByIndustry();
 // System.debug('Industry distribution: ' + industryCounts);
-// AI Generated Code by Deloitte + Cursor (END)
 
-Picklist values must match exactly (case-sensitive) in WHERE clauses.
-Use IN clauses to filter by multiple picklist values efficiently.
+```
+
+
+## Picklist values must match exactly (case-sensitive) in WHERE clauses.
+
+
+## Use IN clauses to filter by multiple picklist values efficiently.
+
 Aggregate queries enable analysis of picklist value distributions.
 
 DML and CRUD Operations
 
 INSERT single and multiple records
 
-INSERT operations add new records to the Salesforce database.
-You can insert single records or lists of records for bulk operations.
-Bulk inserts are more efficient and help avoid governor limits.
+
+## INSERT operations add new records to the Salesforce database.
+
+
+## You can insert single records or lists of records for bulk operations.
+
+
+## Bulk inserts are more efficient and help avoid governor limits.
+
 INSERT is the first step in creating new data in Salesforce.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DMLInsert {
     public static Id insertSingleAccount() {
         Account acc = new Account(Name = 'New Account', Industry = 'Technology');
@@ -3572,20 +3861,31 @@ public class DMLInsert {
 // Usage example (run in Execute Anonymous):
 // Id accountId = DMLInsert.insertSingleAccount();
 // System.debug('Created account with ID: ' + accountId);
-// AI Generated Code by Deloitte + Cursor (END)
 
-INSERT operations automatically populate Id fields after successful insertion.
-Bulk inserts (lists) are more efficient than individual inserts.
+```
+
+
+## INSERT operations automatically populate Id fields after successful insertion.
+
+
+## Bulk inserts (lists) are more efficient than individual inserts.
+
 Always check for errors after DML operations.
 
 UPDATE records based on criteria
 
-UPDATE modifies existing records in the database.
-You can update single records or lists of records.
-Updates require records to have their Id field populated.
+
+## UPDATE modifies existing records in the database.
+
+
+## You can update single records or lists of records.
+
+
+## Updates require records to have their Id field populated.
+
 This is essential for maintaining and modifying existing data.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DMLUpdate {
     public static void updateAccountName(Id accountId, String newName) {
         Account acc = [SELECT Id, Name FROM Account WHERE Id = :accountId];
@@ -3616,20 +3916,31 @@ public class DMLUpdate {
 
 // Usage example (run in Execute Anonymous):
 // DMLUpdate.updateAccountName('001xx000003DGbQAAW', 'Updated Name');
-// AI Generated Code by Deloitte + Cursor (END)
 
-UPDATE requires records to have Id values set.
-Query records first, modify fields, then update.
+```
+
+
+## UPDATE requires records to have Id values set.
+
+
+## Query records first, modify fields, then update.
+
 Bulk updates are more efficient than individual updates.
 
 DELETE records conditionally
 
-DELETE removes records from the database permanently.
-You can delete single records or lists of records.
-Deleted records go to the Recycle Bin and can be restored.
+
+## DELETE removes records from the database permanently.
+
+
+## You can delete single records or lists of records.
+
+
+## Deleted records go to the Recycle Bin and can be restored.
+
 DELETE is a destructive operation that should be used carefully.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DMLDelete {
     public static void deleteAccount(Id accountId) {
         Account acc = [SELECT Id FROM Account WHERE Id = :accountId];
@@ -3658,20 +3969,27 @@ public class DMLDelete {
 // Usage example (run in Execute Anonymous):
 // DMLDelete.deleteAccountsByIndustry('Obsolete');
 // System.debug('Deleted accounts in Obsolete industry');
-// AI Generated Code by Deloitte + Cursor (END)
 
-DELETE operations move records to the Recycle Bin where they can be restored.
+```
+
+
+## DELETE operations move records to the Recycle Bin where they can be restored.
+
 Always query records before deleting to ensure you're deleting the correct records.
 Use WHERE clauses to conditionally delete based on criteria.
 
 UPSERT with external IDs
 
 UPSERT inserts new records or updates existing ones based on external ID fields.
-External IDs are custom fields marked as unique and external identifiers.
-UPSERT eliminates the need to check if records exist before inserting/updating.
+
+## External IDs are custom fields marked as unique and external identifiers.
+
+
+## UPSERT eliminates the need to check if records exist before inserting/updating.
+
 This is ideal for data integration and synchronization scenarios.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DMLUpsert {
     // Assuming Account has an external ID field called External_ID__c
     public static void upsertAccountByExternalId(String externalId, String name) {
@@ -3694,20 +4012,27 @@ public class DMLUpsert {
 
 // Usage example (run in Execute Anonymous):
 // DMLUpsert.upsertAccountByExternalId('EXT-001', 'Upserted Account');
-// AI Generated Code by Deloitte + Cursor (END)
 
-UPSERT uses external ID fields to determine if a record exists.
+```
+
+
+## UPSERT uses external ID fields to determine if a record exists.
+
 If a record with the external ID exists, it's updated; otherwise, it's inserted.
 This simplifies data synchronization and integration processes.
 
 DML exception handling via try/catch
 
-DML operations can fail, so exception handling is essential for robust code.
-Try-catch blocks capture DmlException and other exceptions.
+
+## DML operations can fail, so exception handling is essential for robust code.
+
+
+## Try-catch blocks capture DmlException and other exceptions.
+
 Proper error handling prevents code failures and enables graceful error recovery.
 Always handle DML exceptions to provide meaningful error messages.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DMLExceptionHandling {
     public static void insertAccountWithErrorHandling(String accountName) {
         try {
@@ -3741,20 +4066,31 @@ public class DMLExceptionHandling {
 
 // Usage example (run in Execute Anonymous):
 // DMLExceptionHandling.insertAccountWithErrorHandling('Test Account');
-// AI Generated Code by Deloitte + Cursor (END)
 
-DmlException provides detailed error information including field-level errors.
-Use getNumDml() and getDmlMessage() to handle bulk operation errors.
+```
+
+
+## DmlException provides detailed error information including field-level errors.
+
+
+## Use getNumDml() and getDmlMessage() to handle bulk operation errors.
+
 Always implement error handling for production code.
 
 Rollback transaction after a simulated failure
 
-Rollback undoes all DML operations in the current transaction.
-Use Savepoint to mark a point before operations, then rollback to that point.
-Rollback is useful for testing error scenarios and transaction management.
+
+## Rollback undoes all DML operations in the current transaction.
+
+
+## Use Savepoint to mark a point before operations, then rollback to that point.
+
+
+## Rollback is useful for testing error scenarios and transaction management.
+
 This ensures data consistency when operations fail.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class TransactionRollback {
     public static void demonstrateRollback() {
         Savepoint sp = Database.setSavepoint();
@@ -3790,20 +4126,27 @@ public class TransactionRollback {
 
 // Usage example (run in Execute Anonymous):
 // TransactionRollback.demonstrateRollback();
-// AI Generated Code by Deloitte + Cursor (END)
 
-Savepoints mark transaction state; rollback returns to that state.
-All DML operations after the savepoint are undone on rollback.
+```
+
+
+## Savepoints mark transaction state; rollback returns to that state.
+
+
+## All DML operations after the savepoint are undone on rollback.
+
 Use rollback for error recovery and transaction management.
 
 Partial success/failure handling in bulk DML
 
-Bulk DML operations can partially succeed when some records fail.
+
+## Bulk DML operations can partially succeed when some records fail.
+
 Database methods (Database.insert, etc.) allow partial success with allOrNone=false.
 You can inspect individual results to identify which records succeeded or failed.
 This enables robust bulk processing with error recovery.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class PartialSuccessHandling {
     public static void insertWithPartialSuccess(List<Account> accounts) {
         Database.SaveResult[] results = Database.insert(accounts, false);
@@ -3847,20 +4190,31 @@ public class PartialSuccessHandling {
 //     new Account() // Invalid - missing name
 // };
 // PartialSuccessHandling.insertWithPartialSuccess(accounts);
-// AI Generated Code by Deloitte + Cursor (END)
 
-Database methods with allOrNone=false allow partial success.
-SaveResult objects provide detailed information about each record's outcome.
+```
+
+
+## Database methods with allOrNone=false allow partial success.
+
+
+## SaveResult objects provide detailed information about each record's outcome.
+
 This enables processing valid records while identifying and handling failures.
 
 Retrieving and editing records fetched from SOQL
 
-Records retrieved from SOQL queries can be modified and updated.
-Query records, modify their fields, then perform DML operations.
-This pattern enables data transformation and batch updates.
+
+## Records retrieved from SOQL queries can be modified and updated.
+
+
+## Query records, modify their fields, then perform DML operations.
+
+
+## This pattern enables data transformation and batch updates.
+
 Always query only the fields you need for better performance.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class QueryAndUpdate {
     public static void updateAccountIndustry(Id accountId, String newIndustry) {
         Account acc = [SELECT Id, Industry FROM Account WHERE Id = :accountId];
@@ -3896,20 +4250,29 @@ public class QueryAndUpdate {
 
 // Usage example (run in Execute Anonymous):
 // QueryAndUpdate.bulkUpdateAccounts('Old Industry', 'New Industry');
-// AI Generated Code by Deloitte + Cursor (END)
 
-Query records, modify fields in memory, then update.
-This pattern enables efficient batch processing of record modifications.
+```
+
+
+## Query records, modify fields in memory, then update.
+
+
+## This pattern enables efficient batch processing of record modifications.
+
 Only query fields you need to modify for better performance.
 
 Soft deleting using undelete
 
-Undelete restores records from the Recycle Bin, effectively "soft deleting."
+
+## Undelete restores records from the Recycle Bin, effectively "soft deleting."
+
 Deleted records remain in the Recycle Bin for 15 days (or 45 days in some orgs).
-Undelete is useful for recovering accidentally deleted records.
+
+## Undelete is useful for recovering accidentally deleted records.
+
 This provides a safety net for data recovery.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class SoftDeleteOperations {
     public static void deleteAndUndeleteAccount(Id accountId) {
         Account acc = [SELECT Id, Name FROM Account WHERE Id = :accountId];
@@ -3939,20 +4302,27 @@ public class SoftDeleteOperations {
 
 // Usage example (run in Execute Anonymous):
 // SoftDeleteOperations.deleteAndUndeleteAccount('001xx000003DGbQAAW');
-// AI Generated Code by Deloitte + Cursor (END)
 
-Use ALL ROWS in SOQL to query deleted records from the Recycle Bin.
-Undelete restores records and their relationships.
+```
+
+
+## Use ALL ROWS in SOQL to query deleted records from the Recycle Bin.
+
+
+## Undelete restores records and their relationships.
+
 Records are permanently deleted after the Recycle Bin retention period.
 
 Field updates across objects (e.g., updating all Contacts for an Account)
 
 Updating related records requires querying the relationship and modifying child records.
-You can update multiple related records in a single DML operation.
+
+## You can update multiple related records in a single DML operation.
+
 This pattern is common for maintaining data consistency across object relationships.
 Efficient relationship queries enable bulk updates of related records.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class CrossObjectUpdates {
     public static void updateAllContactsForAccount(Id accountId, String newPhone) {
         List<Contact> contacts = [
@@ -3995,24 +4365,31 @@ public class CrossObjectUpdates {
 
 // Usage example (run in Execute Anonymous):
 // CrossObjectUpdates.updateAllContactsForAccount('001xx000003DGbQAAW', '555-1234');
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Query related records using relationship fields (AccountId, etc.).
-Update multiple related records in a single DML operation for efficiency.
+
+## Update multiple related records in a single DML operation for efficiency.
+
 This maintains data consistency across object relationships.
 
 
-5. Database Methodology
+# 5. Database Methodology
+
 Apex Database Class
 
 Database.insert vs. standard insert (error handling and partial success)
 
 Database.insert provides more control than standard insert, especially for error handling.
 The allOrNone parameter controls whether all records must succeed or partial success is allowed.
-Database methods return SaveResult arrays for detailed error inspection.
+
+## Database methods return SaveResult arrays for detailed error inspection.
+
 This enables sophisticated error handling and partial success scenarios.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DatabaseMethodExamples {
     public static void databaseInsertWithPartialSuccess(List<Account> accounts) {
         Database.SaveResult[] results = Database.insert(accounts, false);
@@ -4045,7 +4422,9 @@ public class DatabaseMethodExamples {
 //     new Account() // Invalid
 // };
 // DatabaseMethodExamples.databaseInsertWithPartialSuccess(accounts);
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Database.insert with allOrNone=false allows partial success and detailed error inspection.
 Standard insert throws exceptions on any failure but is simpler for all-or-nothing scenarios.
@@ -4054,11 +4433,15 @@ Choose based on your error handling requirements.
 Database.update with allOrNone set to false
 
 Database.update with allOrNone=false enables partial success in bulk updates.
-Failed records don't prevent successful updates of other records.
-SaveResult arrays provide detailed information about each record's outcome.
+
+## Failed records don't prevent successful updates of other records.
+
+
+## SaveResult arrays provide detailed information about each record's outcome.
+
 This is essential for robust bulk data processing.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DatabaseUpdateExamples {
     public static void updateWithPartialSuccess(List<Account> accounts) {
         Database.SaveResult[] results = Database.update(accounts, false);
@@ -4089,7 +4472,9 @@ public class DatabaseUpdateExamples {
 //     acc.Industry = 'Technology';
 // }
 // DatabaseUpdateExamples.updateWithPartialSuccess(accounts);
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 allOrNone=false allows processing to continue despite individual record failures.
 This is crucial for bulk operations where some records may have validation errors.
@@ -4098,11 +4483,15 @@ Inspect SaveResult arrays to identify and handle failures appropriately.
 Database.delete with partial failure capture
 
 Database.delete with allOrNone=false allows partial success in bulk deletions.
-You can identify which records were deleted and which failed.
-This enables graceful handling of deletion errors.
+
+## You can identify which records were deleted and which failed.
+
+
+## This enables graceful handling of deletion errors.
+
 Partial success is useful when some records may have dependencies preventing deletion.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DatabaseDeleteExamples {
     public static void deleteWithPartialSuccess(List<Account> accounts) {
         Database.DeleteResult[] results = Database.delete(accounts, false);
@@ -4130,20 +4519,28 @@ public class DatabaseDeleteExamples {
 // Usage example (run in Execute Anonymous):
 // List<Account> accounts = [SELECT Id, Name FROM Account LIMIT 5];
 // DatabaseDeleteExamples.deleteWithPartialSuccess(accounts);
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Database.delete with allOrNone=false enables partial success in bulk deletions.
-DeleteResult arrays provide detailed information about each deletion attempt.
+
+## DeleteResult arrays provide detailed information about each deletion attempt.
+
 This allows processing to continue even when some records cannot be deleted.
 
 Using Database.saveResult for granular error logging
 
 SaveResult objects provide detailed information about individual DML operation outcomes.
-You can inspect success status, record IDs, and specific error messages.
-This enables granular error logging and detailed failure analysis.
+
+## You can inspect success status, record IDs, and specific error messages.
+
+
+## This enables granular error logging and detailed failure analysis.
+
 SaveResult is essential for understanding bulk operation results.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class SaveResultLogging {
     public static void detailedErrorLogging(List<Account> accounts) {
         Database.SaveResult[] results = Database.insert(accounts, false);
@@ -4191,20 +4588,28 @@ public class SaveResultLogging {
 //     new Account() // Invalid
 // };
 // SaveResultLogging.detailedErrorLogging(accounts);
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 SaveResult provides isSuccess(), getId(), and getErrors() for detailed inspection.
-Error objects contain status codes, messages, and field information.
+
+## Error objects contain status codes, messages, and field information.
+
 Use this for comprehensive error logging and debugging.
 
 Conditional upsert using Database methods
 
 Database.upsert provides more control than standard upsert for conditional operations.
-You can specify external ID fields and handle partial success.
-This enables sophisticated data synchronization scenarios.
+
+## You can specify external ID fields and handle partial success.
+
+
+## This enables sophisticated data synchronization scenarios.
+
 Database.upsert is ideal for integration and data loading operations.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DatabaseUpsertExamples {
     // Assuming External_ID__c is an external ID field
     public static void conditionalUpsert(List<Account> accounts) {
@@ -4239,10 +4644,14 @@ public class DatabaseUpsertExamples {
 //     new Account(External_ID__c = 'EXT-001', Name = 'Upsert Test')
 // };
 // DatabaseUpsertExamples.conditionalUpsert(accounts);
-// AI Generated Code by Deloitte + Cursor (END)
+
+```
+
 
 Database.upsert with external ID fields enables conditional insert/update logic.
 UpsertResult provides isCreated() to distinguish inserts from updates.
+
+```apex
 Use allOrNone=false for partial success handling in bulk operations.
 
 Performing merge of records using Database.merge
@@ -4252,7 +4661,6 @@ Merge operations transfer related records (contacts, opportunities) to the maste
 You specify the master record and the records to merge into it.
 Merge is essential for data quality and duplicate management.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
 public class DatabaseMergeExamples {
     public static void mergeAccounts(Id masterId, List<Id> duplicateIds) {
         Account master = [SELECT Id, Name FROM Account WHERE Id = :masterId];
@@ -4284,20 +4692,29 @@ public class DatabaseMergeExamples {
 // Usage example (run in Execute Anonymous):
 // DatabaseMergeExamples.mergeAccounts('001xx000003DGbQAAW', 
 //     new List<Id>{'001xx000003DGbRAAW'});
-// AI Generated Code by Deloitte + Cursor (END)
 
-Merge transfers related records to the master and deletes duplicates.
+```
+
+
+## Merge transfers related records to the master and deletes duplicates.
+
 Use Database.merge for bulk merges with error handling.
 Standard merge syntax is simpler for single merges.
 
 Database.emptyRecycleBin to fully remove records
 
-emptyRecycleBin permanently deletes records from the Recycle Bin.
-This is useful for data cleanup and compliance scenarios.
-Records must be in the Recycle Bin (already deleted) to be emptied.
+
+## emptyRecycleBin permanently deletes records from the Recycle Bin.
+
+
+## This is useful for data cleanup and compliance scenarios.
+
+
+## Records must be in the Recycle Bin (already deleted) to be emptied.
+
 This operation cannot be undone.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class RecycleBinOperations {
     public static void emptyRecycleBinForAccounts() {
         List<Account> deletedAccounts = [
@@ -4330,20 +4747,29 @@ public class RecycleBinOperations {
 
 // Usage example (run in Execute Anonymous):
 // RecycleBinOperations.emptyRecycleBinForAccounts();
-// AI Generated Code by Deloitte + Cursor (END)
 
-emptyRecycleBin permanently removes records - this cannot be undone.
-Use ALL ROWS in SOQL to query deleted records from the Recycle Bin.
+```
+
+
+## emptyRecycleBin permanently removes records - this cannot be undone.
+
+
+## Use ALL ROWS in SOQL to query deleted records from the Recycle Bin.
+
 This is useful for data retention and compliance requirements.
 
 Using Database.rollback for transaction management
 
 Database.rollback undoes all DML operations since the last savepoint.
-This is essential for transaction management and error recovery.
-Rollback ensures data consistency when operations fail.
+
+## This is essential for transaction management and error recovery.
+
+
+## Rollback ensures data consistency when operations fail.
+
 Use savepoints to mark transaction state before risky operations.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class DatabaseRollbackExamples {
     public static void rollbackOnError() {
         Savepoint sp = Database.setSavepoint();
@@ -4377,20 +4803,31 @@ public class DatabaseRollbackExamples {
 
 // Usage example (run in Execute Anonymous):
 // DatabaseRollbackExamples.rollbackOnError();
-// AI Generated Code by Deloitte + Cursor (END)
 
-Savepoints mark transaction state; rollback returns to that state.
-All DML operations after the savepoint are undone on rollback.
+```
+
+
+## Savepoints mark transaction state; rollback returns to that state.
+
+
+## All DML operations after the savepoint are undone on rollback.
+
 Use this for atomic transactions and error recovery.
 
 Chained record operations with savepoints
 
-Savepoints enable creating multiple checkpoints in a transaction.
-You can rollback to any savepoint, not just the most recent one.
-This enables complex transaction management with multiple rollback points.
+
+## Savepoints enable creating multiple checkpoints in a transaction.
+
+
+## You can rollback to any savepoint, not just the most recent one.
+
+
+## This enables complex transaction management with multiple rollback points.
+
 Chained operations with savepoints provide fine-grained transaction control.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class ChainedSavepointOperations {
     public static void chainedOperationsWithSavepoints() {
         Savepoint sp1 = Database.setSavepoint();
@@ -4424,20 +4861,28 @@ public class ChainedSavepointOperations {
 
 // Usage example (run in Execute Anonymous):
 // ChainedSavepointOperations.chainedOperationsWithSavepoints();
-// AI Generated Code by Deloitte + Cursor (END)
+```
 
-Multiple savepoints enable fine-grained transaction control.
+
+## Multiple savepoints enable fine-grained transaction control.
+
 You can rollback to any previous savepoint, preserving operations before that point.
 This enables complex error recovery scenarios.
 
 Simulating bulk operations with errors and recoveries
 
-Simulating bulk operations helps test error handling and recovery logic.
-You can intentionally create scenarios with partial failures.
-This validates that your error handling works correctly.
+
+## Simulating bulk operations helps test error handling and recovery logic.
+
+
+## You can intentionally create scenarios with partial failures.
+
+
+## This validates that your error handling works correctly.
+
 Testing error scenarios is essential for robust production code.
 
-// AI Generated Code by Deloitte + Cursor (BEGIN)
+```apex
 public class BulkOperationSimulation {
     public static void simulateBulkInsertWithErrors() {
         List<Account> accounts = new List<Account>();
@@ -4510,8 +4955,12 @@ public class BulkOperationSimulation {
 
 // Usage example (run in Execute Anonymous):
 // BulkOperationSimulation.simulateBulkInsertWithErrors();
-// AI Generated Code by Deloitte + Cursor (END)
+```
 
-Simulating errors validates error handling and recovery logic.
-Use Database methods with allOrNone=false to test partial success scenarios.
-This ensures your code handles real-world error conditions gracefully.
+
+## Simulating errors validates error handling and recovery logic.
+
+
+## Use Database methods with allOrNone=false to test partial success scenarios.
+
+
